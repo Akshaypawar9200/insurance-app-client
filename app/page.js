@@ -1,113 +1,118 @@
-import Image from 'next/image'
+'use client'
+import React from "react";
+import { login as userLogin } from "../lib/login/login";
+import "./globals.css";
+import { useState } from "react";
+import { enqueueSnackbar, SnackbarProvider } from "notistack";
+import { MessageError, MessageSuccess } from "../error/Error";
+import ValidationError from "../sharedcomponent/error/validationError";
+import Spinner from "../sharedcomponent/spinner/Spinner";
+import { useRouter } from "next/navigation";
+import Navbar from "@/sharedcomponent/navbar/Navbar";
 
-export default function Home() {
+
+
+const page = () => {
+  const router=useRouter()
+  // const navigate = new useNavigate();
+  const [userName, setUsername] = useState();
+  const [password, setPassword] = useState();
+  const[role,setRole]=useState()
+  const[loader,setLoader]=useState(false)
+
+
+  const validateUsername = (e) => {
+    setUsername(e.target.value);
+  };
+  const validatePassword = (e) => {
+    setPassword(e.target.value);
+  };
+  const handleRoleChange = (e) => {
+    setRole(e.target.value);
+  };
+
+  const handleLogin = async (e) => {
+    try {
+   
+      e.preventDefault();
+      setLoader(prev=>true)
+      if (userName == "") {
+        throw new ValidationError("plz enter username") 
+       
+      }
+      if (password.length == "") {
+        throw new ValidationError("plz enter password")
+      }
+    
+      const response = await userLogin(userName, password,role);
+      console.log(response);
+      localStorage.setItem("auth", response.headers.auth);
+      localStorage.setItem("username", response.data.username);
+      localStorage.setItem("id", response.data.id);
+
+      if (!response?.data.id) {
+        throw new Error("invalid credential")
+     
+      }
+      // if (response.data.isAdmin == true) {
+      //   MessageSuccess("login sucessful")
+      //   router.push("/admin");
+      // }
+      // if (response.data.isAdmin == false) {
+      //   MessageSuccess("login sucessful")
+
+      //   router.push('/user');
+      // }
+    } 
+    catch (error) {
+      
+      enqueueSnackbar("login failed", { variant: "error" });
+      
+    } 
+  finally{
+    setLoader(prev=>false)
+  }
+
+  };
+  // const handlePassword=(e)=>{
+  //   // navigate(`/forgot/`);
+  //   router.push("/forgot")
+  // }
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">app/page.js</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
+    <>
+      <Spinner loader={loader}/>
+      <SnackbarProvider autoHideDuration={3000} />
+      <Navbar/>
+     
+
+
+<div class="login-container">
+    <form action="#" method="post" class="login-form">
+      <h2>Login</h2>
+      <div class="input-group">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" onChange={validateUsername}required/>
       </div>
-
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px] z-[-1]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
+      <div class="input-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" onChange={validatePassword}required/>
       </div>
-
-      <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800 hover:dark:bg-opacity-30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Explore starter templates for Next.js.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
+      <div class="input-group">
+      <label htmlFor="role">Role</label>
+          <select id="role" value={role} onChange={handleRoleChange} required>
+            <option value="" disabled>Select a role</option>
+            <option value="Admin">Admin</option>
+            <option value="Agent">Agent</option>
+            <option value="Customer">Customer</option>
+            <option value="Employee">Employee</option>
+          </select>
       </div>
-    </main>
-  )
-}
+      <button type="submit"onClick={handleLogin}>Login</button>
+    </form>
+  </div>
+
+    </>
+  );
+};
+
+export default page;
