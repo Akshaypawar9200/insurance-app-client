@@ -45,13 +45,12 @@ const page = () => {
       if (password.length == "") {
         throw new ValidationError("plz enter password")
       }
-
       const response = await userLogin(userName, password, role);
       console.log(response);
-      console.log("////////////////////////////////////////////", response.data.role);
       localStorage.setItem("auth", response.headers.auth);
       localStorage.setItem("username", response.data.username);
       localStorage.setItem("id", response.data.id);
+      localStorage.setItem("role", response.data.role);
 
       if (!response?.data.id) {
         throw new Error("invalid credential")
@@ -91,17 +90,13 @@ const page = () => {
     }
 
   };
-  // const handlePassword=(e)=>{
-  //   // navigate(`/forgot/`);
-  //   router.push("/forgot")
-  // }
+  
+
   return (
     <>
       <Spinner loader={loader} />
       <SnackbarProvider autoHideDuration={3000} />
-    <Navbar/>
-
-
+    {/* <Navbar/> */}
 
       <div class="login-container">
         <form action="#" method="post" class="login-form">
@@ -117,7 +112,7 @@ const page = () => {
           <div class="input-group">
             <label htmlFor="role">Role</label>
             <select id="role" value={role} onChange={handleRoleChange} required>
-              <option value="" disabled>Select a role</option>
+              <option value="" >Select a role</option>
               <option value="Admin">Admin</option>
               <option value="Agent">Agent</option>
               <option value="Customer">Customer</option>

@@ -6,12 +6,12 @@ import Table from "../../sharedcomponent/table/Table";
 import Spinner from "../../sharedcomponent/spinner/Spinner";
 import { MessageError, MessageSuccess } from "../../error/Error";
 import { useRouter } from "next/navigation";
-import { getAllEmployee } from "../../lib/employee/getAllEmployee";
-import CreateEmployee from "../createemployee/CreateEmployeee";
+import { getAllState } from "../../lib/state/GetAllState";
 
-const page = () => {  
+import CreateState from "../createstate/createState";
+
+const GetAllState = () => {  
   const router = useRouter();
- 
   const [count, setCount] = useState(1);
   const [data, setData] = useState([]);
   const [limit, setLimit] = useState(5);
@@ -42,16 +42,16 @@ const page = () => {
   };
 
 
-  const handelAllEmployees = async (e) => {
+  const handelAllState = async (e) => {
     try {
       setIsLoading((prev) => true);
       let filters = {
         limit: limit,
         page: offset,
       };
-      // let response = await getAccounts(userId, filters);
-      let response = await getAllEmployee(filters)
-      console.log(response)
+    
+      let response = await getAllState(filters)
+    
       setCount((prev) => response?.headers["x-total-count"]);
       let noOfPages = Math.ceil(response?.headers["x-total-count"] / limit);
       setNoOfPages(noOfPages);
@@ -64,7 +64,9 @@ const page = () => {
       setIsLoading((prev) => false);
     }
   };
-
+  useEffect(() => {
+    handelAllState();
+  }, [limit,offset]);
   const verifyUser = async () => {
     try {
       let response = await verify();
@@ -81,7 +83,7 @@ const page = () => {
 
   useEffect(() => {
     if (isVerifiedUser) {
-      handelAllEmployees();
+        handelAllState();
     }
   }, [limit, offset, isVerifiedUser]);
 
@@ -92,12 +94,13 @@ const page = () => {
       </h1>
     );
   }
-
+  
   return (
     <>
       <Spinner isLoading={isLoading} />
       {/* <NavbarShared /> */}
-      <CreateEmployee handelAllEmployees={handelAllEmployees}/>
+   
+      <CreateState/>
       <Table
         rows={data}
         setOffset={setOffset}
@@ -111,4 +114,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default GetAllState;

@@ -1,72 +1,119 @@
-import React, { useState } from 'react';
-import { GetAllInsuranceType as GetAllInsuranceType } from "../../lib/GetAllInsuranceType";
+"use client"
+import './Navbar.css'; // Import your CSS file for Navbar styles
+import * as React from 'react';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import { enqueueSnackbar, SnackbarProvider } from "notistack";
+import Modal from '@mui/material/Modal';
+import {logout as logout } from '../../lib/logout/Logout'
+import {resetPasswordDashboard as resetPasswordDashboard} from '../../lib/resetPassword/resetPassword'
+
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4
+};
 const Navbar = () => {
+  const [open, setOpen] = React.useState(false);
+  const[oldpassword,setOldpassword]=React.useState("")
+  const[newpassword,setNewpassword]=React.useState("")
+  // const[username,setUserName]=React.useState("")
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
+  // setUserName(localStorage.getItem('username'))
+
+  const handleLogout=async()=>{
+    const response=await logout()
+    console.log("logout sucessfully");
+    localStorage.clear()
+    router.push("/")
+  }
+  let username=localStorage.getItem("username")
+  const getOldPassword=(e)=>{
+    
+    setOldpassword(e.target.value)
+  }
+  const getNewPassword=(e)=>{
+    setNewpassword(e.target.value)
+  }
+  const resetPassword=async(e)=>{
+    e.preventDefault()
+      try {
+       
+        
+        if(oldpassword==""){
+    
+          enqueueSnackbar("plz enter old password", { variant: "error" })
+          return
+        }
   
-  const [insuranceType, setInsuranceType] = useState([]);
-  const[planId,setPlanId]=useState("")
- const handleInsuranceType=async(e)=>{
-  e.preventDefault()
-
-  const response = await GetAllInsuranceType()
-  setInsuranceType(prev=>response.data)
- }
- const handleDropDown=(insuranceTypeId)=>{
-  console.log("::::::::::::::::::::::::{{{{{{{{{{{{{{{{{{{{{{{{{{",insuranceTypeId);
-
- }
+        if(newpassword==""){
+          enqueueSnackbar("plz enter new password", { variant: "error" })
+          return
+        }
+ 
+        const res=await resetPasswordDashboard(username,oldpassword,newpassword)
+     
+        enqueueSnackbar('password reset sucessfully', { variant: "success" })
+        
+      } catch (error) {
+  
+        enqueueSnackbar("invalid old password", { variant: "error" })
+      }
+    }
   return (
     <>
-      <nav className="navbar navbar-expand-lg bg-body-tertiary">
-        <div className="container-fluid">
-          <a className="navbar-brand" href="#">
-            <img src="https://png.pngtree.com/template/20190316/ourmid/pngtree-insurance-logo-vector-image_80257.jpg" alt="" height={'30px'} />
-          </a>
-          <button
-            className="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span className="navbar-toggler-icon"></span>
-          </button>
-          <div className="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-            
-              <li className="nav-item dropdown">
-                <a
-                  className="nav-link dropdown-toggle"
-                  href="#"
-                  role="button"
-                  onClick={handleInsuranceType} 
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                  INSURANCE TYPE
-                </a>
-                <ul className="dropdown-menu">
-                  {insuranceType.map((item, index) => (
-                    <li key={index}>
-                      <a className="dropdown-item" href="#"onClick={() => handleDropDown(item.id)}>
-                        {item.insuranceName}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link disabled" aria-disabled="true">
-                
-                </a>
-              </li>
-            </ul>
-         
-          </div>
+      <SnackbarProvider autoHideDuration={3000} />
+      <nav className="navbar">
+      <div className="navbar-container">
+        <div className="navbar-logo">
+          <a href="/">Insurance</a>
         </div>
-      </nav>
+       
+      </div>
+      <div>
+ 
+ 
+          <button onClick={handleOpen}>Reset Password</button>
+          
+          <button onClick={handleLogout}>Logout</button>
+      
+       
+     
+
+     
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+        <form action="#">
+        <label htmlFor="old-Password">Old Password</label><br/>
+        <input type="text" onChange={getOldPassword}/><br/>
+        <label htmlFor="new-Password">New Password</label><br/>
+        <input type="text" onChange={getNewPassword}/><br/>
+        <Button variant="primary" onClick={resetPassword}>
+          Reset Password
+          </Button>
+      </form>
+        </Box>
+
+
+      </Modal>
+    </div>
+    </nav>
     </>
+    
+    
   );
 };
 
