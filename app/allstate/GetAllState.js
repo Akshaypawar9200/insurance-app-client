@@ -8,7 +8,7 @@ import { MessageError, MessageSuccess } from "../../error/Error";
 import { useRouter } from "next/navigation";
 import { getAllState } from "../../lib/state/GetAllState";
 
-import CreateState from "../createstate/createState";
+import CreateState from "../forms/createstate/createState";
 
 const GetAllState = () => {  
   const router = useRouter();

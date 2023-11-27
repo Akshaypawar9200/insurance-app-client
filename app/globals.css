@@ -1,4 +1,8 @@
-Resetting default margin and padding
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
 body, h1, h2, h3, p, ul, li {
   margin: 0;
   padding: 0;
@@ -29,7 +33,10 @@ body, h1, h2, h3, p, ul, li {
   text-align: center;
   margin-bottom: 20px;
 }
-
+.required::after {
+  content: ' *';
+  color: red;
+}
 .input-group {
   margin-bottom: 15px;
 }

@@ -60,7 +60,7 @@ const page = () => {
 
         MessageSuccess("login sucessful")
 
-        router.push('/employee');
+        router.push('/employeedashboard');
 
       }
       if (response.data.role == "Admin") {

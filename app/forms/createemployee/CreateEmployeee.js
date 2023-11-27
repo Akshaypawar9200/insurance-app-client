@@ -1,27 +1,29 @@
 import { useEffect, useState } from "react";
-import Spinner from "../../sharedcomponent/spinner/Spinner";
-import { MessageError, MessageSuccess } from "../../error/Error";
-import { CreateNewAgent } from "../../lib/employee/CreateNewAgent";
+import Spinner from "../../../sharedcomponent/spinner/Spinner";
+import { MessageError, MessageSuccess } from "../../../error/Error";
+import { CreateNewEmployee } from "../../../lib/employee/CreateNewEmployee";
 
-const createAgent = ({ handelAllEmployees }) => {
+const CreateEmployee = ({ handelAllEmployees }) => {
   const [isLoading, setIsLoading] = useState(false);
 
-  
-  const [agentName, setAgentName] = useState("");
+  const [role, setRole] = useState("");
+  const [employeeName, setEmployeeName] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
-  const [agentAddress, setAgentAddress] = useState("");
-  const [qualification, setQualification] = useState("");
-  const[employeeId,setEmployeeId]=useState()
-  const [employeeImgUrl, setEmployeeImgUrl] = useState()
+  const [empPhoto, setEmpPhoto] = useState()
 
 
-  const handleCreateAgent = async (d) => {
+  const handleCreateEmployee = async (e) => {
+   
     try {
       setIsLoading((prev) => true);
-      if (agentName == "") {
-        throw new Error("invalid agentName");
+     
+      if (role == "") {
+        throw new Error("invalid role");
+      }
+      if (employeeName == "") {
+        throw new Error("invalid employeeName");
       }
       if (username == "") {
         throw new Error("invalid username");
@@ -32,14 +34,8 @@ const createAgent = ({ handelAllEmployees }) => {
       if (email == "") {
         throw new Error("invalid email");
       }
-      if (agentAddress == "") {
-        throw new Error("invalid agentAddress");
-      }
-      if (qualification == "") {
-        throw new Error("invalid qualification");
-      }
-      setEmployeeId=localStorage.getItem("id")
-      const response = await CreateNewAgent(agentName, username, password, email,agentAddress,qualification,id)
+
+      const response = await CreateNewEmployee(role, employeeName, username, password, email,employeeImgUrl)
       console.log(response.data);
       handelAllEmployees();
       MessageSuccess("Created Added");
@@ -50,7 +46,11 @@ const createAgent = ({ handelAllEmployees }) => {
       setIsLoading((prev) => false);
     }
   };
-
+  const handleUpload=(e)=>{
+    setEmpPhoto(prev=>e.target.files[0])
+    
+  }
+  console.log("################################################################",empPhoto);
   return (
     <>
       <Spinner isLoading={isLoading} />
@@ -59,16 +59,16 @@ const createAgent = ({ handelAllEmployees }) => {
           <div className="w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
             <form className="space-y-6" action="#">
               <h5 className="text-xl font-medium text-gray-900 dark:text-white">
-                Create Agent
+                Create Employee
               </h5>
               <div>
                 <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                  Agent Name
+                  Employee Name
                 </label>
                 <input
                   type="text"
                   onChange={(e) => {
-                    setAgentName(e.target.value);
+                    setEmployeeName(e.target.value);
                   }}
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                 ></input>
@@ -111,34 +111,29 @@ const createAgent = ({ handelAllEmployees }) => {
               </div>
               <div>
                 <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                agentAddress
+                  role
                 </label>
-                <input
-                  type="text"
-                  onChange={(e) => {
-                    setAgentAddress(e.target.value);
-                  }}
+                <select
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                ></input>
-              </div>
-              <div>
-                <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                Qualification
-                </label>
-                <input
-                  type="text"
                   onChange={(e) => {
-                    setQualification(e.target.value);
+                    setRole(e.target.value);
                   }}
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                ></input>
+                >
+                  <option value="">select</option>
+              
+                  <option value="employee">employee</option>
+                </select><br></br>
+                <label>
+                    upload Photo
+                  </label>
+                  <input type="file"  onChange={handleUpload}/>
               </div>
               <button
                 type="button"
                 className="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                onClick={handleCreateAgent}
+                onClick={handleCreateEmployee}
               >
-                Add Agent
+                Add Employee
               </button>
             </form>
           </div>
@@ -148,4 +143,4 @@ const createAgent = ({ handelAllEmployees }) => {
   );
 };
 
-export default createAgent;
+export default CreateEmployee;

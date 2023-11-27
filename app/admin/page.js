@@ -7,7 +7,7 @@ import Spinner from "../../sharedcomponent/spinner/Spinner";
 import { MessageError, MessageSuccess } from "../../error/Error";
 import { useRouter } from "next/navigation";
 import { getAllEmployee } from "../../lib/employee/getAllEmployee";
-import CreateEmployee from "../createemployee/CreateEmployeee";
+import CreateEmployee from "../forms/createemployee/CreateEmployeee";
 
 const page = () => {  
   const router = useRouter();

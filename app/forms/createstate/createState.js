@@ -1,8 +1,8 @@
 'use client'
 
 import React, { useState } from 'react'
-import ValidationError from '../../sharedcomponent/error/validationError'
-import { CreateNewState as CreateNewState } from '../../lib/state/CreateState'
+import ValidationError from '../../../sharedcomponent/error/validationError'
+import { CreateNewState as CreateNewState } from '../../../lib/state/CreateState'
 
 const CreateState = () => {
     const [stateName, setStateName] = useState('')
