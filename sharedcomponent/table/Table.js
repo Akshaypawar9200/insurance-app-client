@@ -1,187 +1,84 @@
-import React, { useState } from "react";
-import PaginationShared from "../pagination/PaginationShared";
-// import RowButtons from "./RowButtons";
-// import Spinner from "./Spinner/Spinner";
-// import { Pagination } from "@mui/material";
+import React from 'react';
+import PaginationShared from '../pagination/PaginationShared';
 
-const Table = ({
-  rows,
-  setLimit,
-  setOffset,
-  limit,
-  offset,
-  count,
-  handleUpdate,
-  handleDelete,
-  handleView,
-  isUpdateButton,
-  isDeleteButton,
-  isViewButton,
-  hasNoButtons,
-  isDeposite,
-  isWithdraw,
-  isTransfer,
-  handleDeposite,
-  handleWithdraw,
-  handleTransfer,
-}) => {
-  let headerForTable;
-  let dataForTable;
+const Table = ({ data, count, limit, setPage, page, setLimit, updateButton, deleteButton, viewButton, updateFunction, setShow, deleteFunction, infoFunction }) => {
+  let headerOfUserTable, rowsOfUserTable;
+  if (data.length > 0) {
+    let key = Object.keys(data[0]);
 
-  if (rows.length !== 0) {
-    let keysArray = Object.keys(rows[0]);
-    if (!hasNoButtons) {
-      keysArray.push("Edit");
-    }
-    let dataArray = Object.values(rows);
+    headerOfUserTable = Object.keys(data[0]).map((k, index) => (
+      <th key={index} className="px-4 py-2">{k}</th>
+    ));
 
-    headerForTable = keysArray.map((key) => {
-      return (
-        <th scope="col" className="px-6 py-3" key={Math.random()}>
-          {key}
-        </th>
-      );
-    });
+    rowsOfUserTable = data.map((d, rowIndex) => {
+      let singleRow = [];
 
-    dataForTable = dataArray.map((d) => {
-      return (
-        <tr
-          className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
-          key={Math.random()}
-        >
-          {keysArray.map((key) => {
-            if (d[key] === true) {
-              return (
-                <td className="px-6 py-4" key={Math.random()}>
-                  True
-                </td>
-              );
-            }
-            if (d[key] === false) {
-              return (
-                <td className="px-6 py-4" key={Math.random()}>
-                  False
-                </td>
-              );
-            }
-            if (key == "Edit") {
-              return (
-                <td className="px-6 py-4" key={Math.random()}>
-                  {/* <RowButtons
-                    handleUpdate={handleUpdate}
-                    handleDelete={handleDelete}
-                    handleView={handleView}
-                    itemData={d}
-                    isDeleteButton={isDeleteButton}
-                    isUpdateButton={isUpdateButton}
-                    isViewButton={isViewButton}
-                    isDeposite={isDeposite}
-                    isWithdraw={isWithdraw}
-                    isTransfer={isTransfer}
-                    handleDeposite={handleDeposite}
-                    handleWithdraw={handleWithdraw}
-                    handleTransfer={handleTransfer}
-                  /> */}
-                </td>
-              );
-            }
-            return (
-              <td className="px-6 py-4" key={Math.random()}>
-                {d[key]}
-              </td>
-            );
-          })}
-        </tr>
-      );
+      for (let i = 0; i < key.length; i++) {
+        if (typeof d[key[i]] === 'boolean') {
+          singleRow.push(
+            <td key={i} className="px-4 py-2">
+              {d[key[i]] ? 'true' : 'false'}
+            </td>
+          );
+        } else {
+          singleRow.push(
+            <td key={i} className="px-4 py-2">
+              {d[key[i]]}
+            </td>
+          );
+        }
+      }
+
+      if (updateButton === true) {
+        singleRow.push(
+          <td key={key.length} className="px-4 py-2">
+            <button className="btn-primary1" onClick={() => {
+              updateFunction(d);
+              setShow(true);
+            }}>Update</button>
+          </td>
+        );
+      }
+      if (deleteButton === true) {
+        singleRow.push(
+          <td key={key.length + 1} className="px-4 py-2">
+            <button className="btn-primary2" onClick={() => { deleteFunction(d) }}>Delete</button>
+          </td>
+        );
+      }
+      if (viewButton === true) {
+        singleRow.push(
+          <td key={key.length + 2} className="px-4 py-2">
+            <button className="btn-primary3" onClick={() => { infoFunction(d) }}>View</button>
+          </td>
+        );
+      }
+
+      return <tr key={rowIndex} className={rowIndex % 2 === 0 ? "bg-gray-100" : "bg-gray-200"}>{singleRow}</tr>;
     });
   }
 
-  if (rows.length == 0) {
+  const TableOfUsers = () => {
     return (
-      <>
-        {/* <div style={{ marginLeft: "5em" }}>
-          <h1>No records found</h1>
-          <p>Please add new records</p>
-        </div> */}
-        <div className="relative overflow-x-auto rounded-lg m-2">
-          <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-            <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-              <tr>
-                <th scope="col" className="px-6 py-3" key={Math.random()}>
-                  No records found
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr
-                className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
-                key={Math.random()}
-              >
-                <td className="px-6 py-4" key={Math.random()}>
-                  Please add new records
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </>
+      <table className="min-w-full divide-y divide-gray-200 shadow-md bg-white rounded-lg">
+        <thead>
+          <tr>{headerOfUserTable}</tr>
+        </thead>
+        <tbody>{rowsOfUserTable}</tbody>
+      </table>
     );
-  }
+  };
 
   return (
-    <>
-      <div
-        className="main"
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          marginRight: "20px",
-        }}
-      >
-        <PaginationShared
-          setOffset={setOffset}
-          limit={limit}
-          offset={offset}
-          count={count}
-        />
-        <div className="flex">
-          {/* <p>Records per page</p> */}
-          <select
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-            value={limit}
-            onChange={(e) => {
-              setLimit((prev) => e.target.value);
-              let noOfPages = Math.ceil(count / e.target.value);
-              setOffset(1);
-            }}
-          >
-            <option value="1">
-              1
-            </option>
-            <option value="2">
-              2
-            </option>
-            <option value="5">
-              5
-            </option>
-            <option value="10">
-              10
-            </option>
-          </select>
-        </div>
-      </div>
-      <div className="relative overflow-x-auto rounded-lg m-2">
-        <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-          <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-            <tr key={Math.random()}>{headerForTable}</tr>
-          </thead>
-          <tbody>{dataForTable}</tbody>
-        </table>
-      </div>
-    </>
+   <>
+      <PaginationShared limit={limit}  offset={page}  count={count} setOffset={setPage}/>
+      <TableOfUsers />
+   </>
+ 
+      
+    
+
   );
 };
 
 export default Table;
-
-

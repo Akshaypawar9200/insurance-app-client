@@ -1,0 +1,107 @@
+.main{
+    display: flex;
+    justify-content: space-around;
+}
+.btn-primary{
+    margin: 5px;
+    border: none;
+    border-radius: 5px;
+}
+.btn-primary1{
+    background-color:skyblue;
+    border: none;
+    border-radius: 5px;
+    color: aliceblue;
+}
+.btn-primary2{
+    background-color:red;
+    border: none;
+    border-radius: 5px;
+    color: aliceblue;
+}
+.btn-primary3{
+    background-color:green;
+    border: none;
+    border-radius: 5px;
+    color: aliceblue;
+}
+
+/* Table.css */
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.table th,
+.table td {
+  border: 1px solid #ccc;
+  padding: 8px;
+}
+
+.table th {
+  background-color: black;
+  font-weight: bold;
+}
+
+.btn-primary1 {
+  /* Define styles for your update button */
+  /* Example styles */
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.btn-primary2 {
+  /* Define styles for your delete button */
+  /* Example styles */
+  background-color: #dc3545;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.btn-primary3 {
+  /* Define styles for your view button */
+  /* Example styles */
+  background-color: #28a745;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+/* Table.css */
+
+/* Remove border lines */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+  }
+  
+  /* Style header */
+  .table thead th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+    border: none;
+    padding: 8px;
+  }
+  
+  /* Style alternate rows */
+  .table tbody tr:nth-child(odd) {
+    background-color: #ec2626; /* Background color for odd rows */
+  }
+  
+  /* Apply padding and remove border for table cells */
+  .table tbody td {
+    padding: 8px;
+    border: none;
+  }
+  
+  /* Define styles for your buttons */
+  /* ... (Existing button styles) */
+  

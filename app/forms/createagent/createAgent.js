@@ -1,45 +1,78 @@
 import { useEffect, useState } from "react";
 import Spinner from "../../../sharedcomponent/spinner/Spinner";
 import { MessageError, MessageSuccess } from "../../../error/Error";
-import { CreateNewAgent } from "../../../lib/employee/CreateNewAgent";
+import { CreateNewAgent as CreateNewAgent } from "../../../lib/employee/CreateNewAgent";
 
-const createAgent = ({ handelAllEmployees }) => {
+const CreateAgent = () => {
+  const qualifications = [
+    'BE Computer',
+    'ME Computer',
+    'MBA',
+    'SSC',
+    'HSC'
+
+  ];
+
   const [isLoading, setIsLoading] = useState(false);
-
-  
+  const namePattern = /^[A-Za-z ]+$/;
   const [agentName, setAgentName] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [agentAddress, setAgentAddress] = useState("");
   const [qualification, setQualification] = useState("");
-  const[employeeId,setEmployeeId]=useState()
-  const [employeeImgUrl, setEmployeeImgUrl] = useState()
+  const [role, setRole] = useState("")
+  const [employeeId, setEmployeeId] = useState()
+  const [agentPhoto, setAgentPhoto] = useState()
 
+
+  const handleUpload = (e) => {
+    setAgentPhoto(prev => e.target.files[0])
+
+  }
 
   const handleCreateAgent = async (d) => {
     try {
       setIsLoading((prev) => true);
-      if (agentName == "") {
-        throw new Error("invalid agentName");
+      if (agentName.length == 0 || !namePattern.test(agentName)) {
+
+        throw new Error('Please enter a agentName (only letters and spaces allowed).');
       }
-      if (username == "") {
-        throw new Error("invalid username");
+      if (username.length == 0 || !namePattern.test(username)) {
+
+        throw new Error('Please enter a username (only letters and spaces allowed).');
       }
-      if (password == "") {
+
+      if (password.length == 0) {
         throw new Error("invalid password");
       }
-      if (email == "") {
+      if (email.length == 0) {
         throw new Error("invalid email");
       }
-      if (agentAddress == "") {
-        throw new Error("invalid agentAddress");
+      if (agentAddress.length == 0 || !namePattern.test(agentAddress)) {
+
+        throw new Error('Please enter a agentAddress (only letters and spaces allowed).');
       }
+
       if (qualification == "") {
         throw new Error("invalid qualification");
       }
-      setEmployeeId=localStorage.getItem("id")
-      const response = await CreateNewAgent(agentName, username, password, email,agentAddress,qualification,id)
+      setEmployeeId(localStorage.getItem("id"))
+      let data = {
+        "agentName": agentName,
+        "role": role,
+        "username": username,
+        "password": password,
+        "email": email,
+        "agentAddress": agentAddress,
+        "qualification": qualification,
+        "employeeId": employeeId
+      }
+      const newData = JSON.stringify(data)
+      let formdata = new FormData();
+      formdata.append("image", agentPhoto);
+      formdata.append("data", newData);
+      const response = await CreateNewAgent(formdata)
       console.log(response.data);
       handelAllEmployees();
       MessageSuccess("Created Added");
@@ -111,27 +144,58 @@ const createAgent = ({ handelAllEmployees }) => {
               </div>
               <div>
                 <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                agentAddress
+                  agentAddress
                 </label>
-                <input
-                  type="text"
+                <textarea
                   onChange={(e) => {
                     setAgentAddress(e.target.value);
                   }}
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                ></input>
+                ></textarea>
               </div>
+
               <div>
                 <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                Qualification
+                  Qualification
                 </label>
-                <input
-                  type="text"
+                <select
+                  value={qualification}
                   onChange={(e) => {
                     setQualification(e.target.value);
                   }}
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                ></input>
+                >
+                  <option value="">Select Qualification</option>
+                  {qualifications.map((qualification, index) => (
+                    <option key={index} value={qualification}>
+                      {qualification}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+
+
+              <div>
+                <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                  role
+                </label>
+                <select
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                  onChange={(e) => {
+                    setRole(e.target.value);
+                  }}
+                >
+                  <option value="">select</option>
+
+                  <option value="Employee">employee</option>
+                </select><br></br>
+              </div>
+              <div>
+                <label>
+                  upload Photo
+                </label>
+                <input type="file" onChange={handleUpload} />
               </div>
               <button
                 type="button"
@@ -148,4 +212,4 @@ const createAgent = ({ handelAllEmployees }) => {
   );
 };
 
-export default createAgent;
+export default CreateAgent;

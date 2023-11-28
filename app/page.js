@@ -114,7 +114,7 @@ const page = () => {
             <select id="role" value={role} onChange={handleRoleChange} required>
               <option value="" >Select a role</option>
               <option value="Admin">Admin</option>
-              <option value="Agent">Agent</option>
+              <option value="Agent">Agent</option>npm 
               <option value="Customer">Customer</option>
               <option value="Employee">Employee</option>
             </select>

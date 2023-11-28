@@ -6,7 +6,7 @@ import Table from "../../sharedcomponent/table/Table";
 import Spinner from "../../sharedcomponent/spinner/Spinner";
 import { MessageError, MessageSuccess } from "../../error/Error";
 import { useRouter } from "next/navigation";
-import { getAllEmployee } from "../../lib/employee/getAllEmployee";
+import { getAllEmployee } from "../../lib/employee/getAllCustomer";
 import CreateEmployee from "../forms/createemployee/CreateEmployeee";
 
 const page = () => {  

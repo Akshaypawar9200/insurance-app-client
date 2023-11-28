@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import Spinner from "../../../sharedcomponent/spinner/Spinner";
 import { MessageError, MessageSuccess } from "../../../error/Error";
-import { CreateNewEmployee } from "../../../lib/employee/CreateNewEmployee";
-
-const CreateEmployee = ({ handelAllEmployees }) => {
+import { CreateNewEmployee as CreateNewEmployee } from "../../../lib/employee/CreateNewEmployee";
+import { SnackbarProvider } from "notistack";
+const CreateEmployee = () => {
   const [isLoading, setIsLoading] = useState(false);
-
+  const namePattern = /^[A-Za-z ]+$/;
   const [role, setRole] = useState("");
   const [employeeName, setEmployeeName] = useState("");
   const [username, setUsername] = useState("");
@@ -19,25 +19,41 @@ const CreateEmployee = ({ handelAllEmployees }) => {
     try {
       setIsLoading((prev) => true);
      
-      if (role == "") {
+      if (role.length==0) {
         throw new Error("invalid role");
       }
-      if (employeeName == "") {
-        throw new Error("invalid employeeName");
+      if (employeeName.length==0||!namePattern.test(employeeName)) {
+       
+        throw new Error('Please enter a employeeName (only letters and spaces allowed).');
       }
-      if (username == "") {
-        throw new Error("invalid username");
+      
+      if (username.length==0||!namePattern.test(username)) {
+       
+        throw new Error('Please enter a username (only letters and spaces allowed).');
       }
-      if (password == "") {
+      if (password.length == 0) {
         throw new Error("invalid password");
       }
-      if (email == "") {
+      if (email.length == 0) {
         throw new Error("invalid email");
       }
 
-      const response = await CreateNewEmployee(role, employeeName, username, password, email,employeeImgUrl)
+      const formData=new FormData()
+      let data={
+        "employeeName":employeeName,
+        "role":role,
+        "username":username,
+        "password":password,
+        "email":email
+      }
+      console.log("?????????????????????????",data);
+      const newData=JSON.stringify(data)
+      let formdata = new FormData();
+      formdata.append("image", empPhoto);
+      formdata.append("data",newData );
+      const response = await CreateNewEmployee(formdata)
       console.log(response.data);
-      handelAllEmployees();
+
       MessageSuccess("Created Added");
       return;
     } catch (error) {
@@ -50,9 +66,10 @@ const CreateEmployee = ({ handelAllEmployees }) => {
     setEmpPhoto(prev=>e.target.files[0])
     
   }
-  console.log("################################################################",empPhoto);
+ 
   return (
     <>
+        <SnackbarProvider autoHideDuration={3000}/>
       <Spinner isLoading={isLoading} />
       <div className="mx-auto w-[25%]">
         <div className="flex justify-center mt-10">
@@ -121,8 +138,10 @@ const CreateEmployee = ({ handelAllEmployees }) => {
                 >
                   <option value="">select</option>
               
-                  <option value="employee">employee</option>
+                  <option value="Employee">employee</option>
                 </select><br></br>
+              </div>
+              <div>
                 <label>
                     upload Photo
                   </label>

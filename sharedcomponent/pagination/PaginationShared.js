@@ -2,6 +2,7 @@ import { Pagination } from "@mui/material";
 import React from "react";
 
 const PaginationShared = ({ limit, offset, count, setOffset }) => {
+
   const noOfPages = Math.ceil(count / limit);
   return (
     <>
@@ -17,4 +18,4 @@ const PaginationShared = ({ limit, offset, count, setOffset }) => {
   );
 };
 
-export default PaginationShared;
+export default PaginationShared;  
