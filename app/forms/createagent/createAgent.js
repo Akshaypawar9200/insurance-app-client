@@ -1,9 +1,10 @@
+'use client'
 import { useEffect, useState } from "react";
 import Spinner from "../../../sharedcomponent/spinner/Spinner";
 import { MessageError, MessageSuccess } from "../../../error/Error";
 import { CreateNewAgent as CreateNewAgent } from "../../../lib/employee/CreateNewAgent";
 
-const CreateAgent = () => {
+const CreateAgent = ({handleSubmit}) => {
   const qualifications = [
     'BE Computer',
     'ME Computer',
@@ -21,8 +22,8 @@ const CreateAgent = () => {
   const [email, setEmail] = useState("");
   const [agentAddress, setAgentAddress] = useState("");
   const [qualification, setQualification] = useState("");
-  const [role, setRole] = useState("")
-  const [employeeId, setEmployeeId] = useState()
+  // const [role, setRole] = useState("")
+  // const [employeeId, setEmployeeId] = useState()
   const [agentPhoto, setAgentPhoto] = useState()
 
 
@@ -30,7 +31,7 @@ const CreateAgent = () => {
     setAgentPhoto(prev => e.target.files[0])
 
   }
-
+ let employeeId =localStorage.getItem("id")
   const handleCreateAgent = async (d) => {
     try {
       setIsLoading((prev) => true);
@@ -57,24 +58,25 @@ const CreateAgent = () => {
       if (qualification == "") {
         throw new Error("invalid qualification");
       }
-      setEmployeeId(localStorage.getItem("id"))
+     
       let data = {
         "agentName": agentName,
-        "role": role,
+        // "role": role,
         "username": username,
         "password": password,
         "email": email,
         "agentAddress": agentAddress,
         "qualification": qualification,
-        "employeeId": employeeId
+
       }
       const newData = JSON.stringify(data)
       let formdata = new FormData();
       formdata.append("image", agentPhoto);
       formdata.append("data", newData);
-      const response = await CreateNewAgent(formdata)
+      console.log(":::::::::::::::::::::::::::::::::::::::::::")
+      const response = await CreateNewAgent(formdata,employeeId)
       console.log(response.data);
-      handelAllEmployees();
+      handleSubmit()
       MessageSuccess("Created Added");
       return;
     } catch (error) {
@@ -174,23 +176,6 @@ const CreateAgent = () => {
                 </select>
               </div>
 
-
-
-              <div>
-                <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                  role
-                </label>
-                <select
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                  onChange={(e) => {
-                    setRole(e.target.value);
-                  }}
-                >
-                  <option value="">select</option>
-
-                  <option value="Employee">employee</option>
-                </select><br></br>
-              </div>
               <div>
                 <label>
                   upload Photo

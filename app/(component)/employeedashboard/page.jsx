@@ -1,13 +1,24 @@
 'use client'
-import React from 'react'
+import React, { useState,useEffect} from 'react'
 import './sample.css'
 import Navbar from '@/sharedcomponent/navbar/Navbar'
 import { useRouter } from 'next/navigation'
-const page = () => {
-  const router=useRouter()
 
+const page = () => {
+const [animationTriggered, setAnimationTriggered] = useState(false);
+
+  const router=useRouter()
+  useEffect(() => {
+    setAnimationTriggered(true);
+  }, []);
   const handleCustomer=()=>{
     router.push('/customer')
+  }
+  const handleAgent=()=>{
+    router.push('/agent')
+  }
+  const handleInsuranceType=()=>{
+    router.push('/insurancetype')
   }
   return (
     <>
@@ -16,13 +27,13 @@ const page = () => {
       <div className="main-container">
         <div className="box">
           <div   className="card1">
-            <div onClick={handleCustomer} className="card">
+          <div onClick={handleCustomer} className={`card ${animationTriggered ? 'animated' : ''}`}>
               <div  className="info">
                 <h5>Customer</h5>
             </div>
           
             </div>
-            <div className="card"><div className="info">
+            <div  onClick={handleAgent} className={`card ${animationTriggered ? 'animated' : ''}`}><div className="info">
             <h5>Agent</h5>
             </div>
            
@@ -30,12 +41,12 @@ const page = () => {
 
           </div>
           <div className="card1">
-            <div className="card"><div className="info">
+            <div onClick={handleInsuranceType} className={`card ${animationTriggered ? 'animated' : ''}`}><div className="info">
             <h5>Insurance Type</h5>
             </div>
             
             </div>
-            <div className="card"><div className="info">
+            <div className={`card ${animationTriggered ? 'animated' : ''}`}><div className="info">
             <h5>Plan Type</h5>
             </div>
               
@@ -43,11 +54,11 @@ const page = () => {
 
           </div>
           <div className="card1">
-            <div className="card">
+            <div className={`card ${animationTriggered ? 'animated' : ''}`}>
               <div className="info">
               <h5>Policies</h5>
               </div></div>
-            <div className="card">
+            <div className={`card ${animationTriggered ? 'animated' : ''}`}>
               <div className="info">
               <h5>Feedback</h5>
               </div></div>

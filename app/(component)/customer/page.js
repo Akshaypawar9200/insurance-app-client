@@ -44,7 +44,7 @@ const page = () => {
   const [count, setCount] = useState(1);
   const [limit, setLimit] = useState(2);
   const [noOfPages, setNoOfPages] = useState(1);
-  const [offset, setOffset] = useState(1);
+
   const [updateTable,setUpdateTable]=useState()
   const[customerId,setCustomerId]=useState()
   const[cityData,setCityData]=useState([])
@@ -86,7 +86,7 @@ const page = () => {
     setCount(prev=>response?.headers["x-total-count"])
   }
   const updateFunction = async (d) => {
-    console.log(d,"**************************")
+  
     setOpen((prev) => true);
     setCustomerName(d.customerName);
     setEmail(d.email);

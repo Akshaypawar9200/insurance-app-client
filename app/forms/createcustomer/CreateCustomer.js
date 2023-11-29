@@ -27,6 +27,8 @@ const CreateCustomer = ({ }) => {
   const [customerAddress, setCustomerAddress] = useState("");
 
   const [photo,setPhoto]=useState()
+  const[adhar,setAdhar]=useState()
+  const[pancard,setPanCard]=useState()
   const[allState,setAllState]=useState([])
   const[stateId,setStateId]=useState("")
   const[cityData,setCityData]=useState([])
@@ -36,6 +38,12 @@ const CreateCustomer = ({ }) => {
  }
  const  handleChangePhoto=(e)=>{
   setPhoto((prev) => e.target.files[0]);
+ }
+ const  handleChangeAdhar=(e)=>{
+  setAdhar((prev) => e.target.files[0]);
+ }
+ const  handleChangePanCard=(e)=>{
+  setPanCard((prev) => e.target.files[0]);
  }
  const handleGetAllState=async()=>{
   const response=await getAllState()
@@ -118,6 +126,8 @@ const CreateCustomer = ({ }) => {
       const newData=JSON.stringify(data)
       let formdata = new FormData();
       formdata.append("image", photo);
+      formdata.append("addharcard",adhar)
+      formdata.append("pancard",pancard)
       formdata.append("data",newData );
       const response = await CreateNewCustomer(formdata)
       console.log(response.data);
@@ -324,6 +334,27 @@ const CreateCustomer = ({ }) => {
                 ></input>
               </div>
 
+              <div>
+                <label className="required block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                  Adhar card
+                </label>
+                <input
+                  type="file"
+                  onChange={handleChangeAdhar}
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                ></input>
+              </div>
+
+              <div>
+                <label className="required block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                  Pan Card
+                </label>
+                <input
+                  type="file"
+                  onChange={handleChangePanCard}
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                ></input>
+              </div>
 
               <button
                 type="button"
