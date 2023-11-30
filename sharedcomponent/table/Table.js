@@ -17,7 +17,7 @@ const Table = ({ data, count, limit, setPage, page, setLimit, updateButton, dele
         if (typeof d[key[i]] === 'boolean') {
           singleRow.push(
             <td key={i} className="px-4 py-2">
-              {d[key[i]] ? 'true' : 'false'}
+              {d[key[i]] ? 'Active' : 'Inactive'}
             </td>
           );
         } else {

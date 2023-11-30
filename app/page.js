@@ -65,7 +65,7 @@ const page = () => {
       }
       if (response.data.role == "Admin") {
         MessageSuccess("login sucessful")
-        router.push("/admin");
+        router.push("/admindashboard");
       }
       if (response.data.role == "Agent") {
         MessageSuccess("login sucessful")

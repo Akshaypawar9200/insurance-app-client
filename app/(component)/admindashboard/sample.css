@@ -1,0 +1,68 @@
+.main-container {
+    background: linear-gradient(black, purple);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: cursive;
+  }
+  
+  .box {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 90%;
+    max-width: 800px; 
+  }
+  
+  .card1 {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin: 10px;
+  }
+  
+  .card {
+    background-color: #f0f0f0;
+    padding: 20px;
+    margin: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    height: 200px !important; 
+    width: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  }
+
+
+  
+  
+
+  .card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  }
+  /* sample.css */
+
+/* Define initial styles for the cards */
+.card {
+  opacity: 0; /* Initially hide the cards */
+  transform: translateY(50px); /* Move the cards downward initially */
+  transition: opacity 0.5s ease, transform 0.5s ease; /* Add transition effects */
+}
+
+/* Define animation for the cards to appear */
+.card.animated {
+  opacity: 1; /* Make the cards visible */
+  transform: translateY(0); /* Move the cards back to their original position */
+}
+
+/* Delay animation for each card */
+.card:nth-child(1) { animation-delay: 10s; }
+.card:nth-child(2) { animation-delay: 1s; }
+.card:nth-child(3) { animation-delay: 1.5s; }
+.card:nth-child(4) { animation-delay: 2s; }
+.card:nth-child(5) { animation-delay: 2.5s; }
+.card:nth-child(6) { animation-delay: 3s; }
