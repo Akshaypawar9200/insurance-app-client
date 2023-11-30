@@ -3,7 +3,7 @@ import Spinner from "../../../sharedcomponent/spinner/Spinner";
 import { MessageError, MessageSuccess } from "../../../error/Error";
 import { CreateNewEmployee as CreateNewEmployee } from "../../../lib/employee/CreateNewEmployee";
 import { SnackbarProvider } from "notistack";
-const CreateEmployee = () => {
+const CreateEmployee = ({handleSubmit}) => {
   const [isLoading, setIsLoading] = useState(false);
   const namePattern = /^[A-Za-z ]+$/;
   const [role, setRole] = useState("");
@@ -15,13 +15,10 @@ const CreateEmployee = () => {
 
 
   const handleCreateEmployee = async (e) => {
-   
+   e.preventDefault()
     try {
       setIsLoading((prev) => true);
-     
-      if (role.length==0) {
-        throw new Error("invalid role");
-      }
+    
       if (employeeName.length==0||!namePattern.test(employeeName)) {
        
         throw new Error('Please enter a employeeName (only letters and spaces allowed).');
@@ -41,18 +38,18 @@ const CreateEmployee = () => {
       const formData=new FormData()
       let data={
         "employeeName":employeeName,
-        "role":role,
+      
         "username":username,
         "password":password,
         "email":email
       }
-      console.log("?????????????????????????",data);
+    
       const newData=JSON.stringify(data)
       let formdata = new FormData();
       formdata.append("image", empPhoto);
       formdata.append("data",newData );
       const response = await CreateNewEmployee(formdata)
-      console.log(response.data);
+      handleSubmit()
 
       MessageSuccess("Created Added");
       return;
@@ -126,21 +123,7 @@ const CreateEmployee = () => {
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                 ></input>
               </div>
-              <div>
-                <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                  role
-                </label>
-                <select
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                  onChange={(e) => {
-                    setRole(e.target.value);
-                  }}
-                >
-                  <option value="">select</option>
               
-                  <option value="Employee">employee</option>
-                </select><br></br>
-              </div>
               <div>
                 <label>
                     upload Photo

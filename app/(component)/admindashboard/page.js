@@ -11,11 +11,11 @@ const [animationTriggered, setAnimationTriggered] = useState(false);
   useEffect(() => {
     setAnimationTriggered(true);
   }, []);
-  const handleCustomer=()=>{
-    router.push('/customer')
+  const handleEmployee=()=>{
+    router.push('/employee')
   }
-  const handleAgent=()=>{
-    router.push('/agent')
+  const handleInsurance=()=>{
+    router.push('/admininsuranceplandashboard')
   }
   const handleInsuranceType=()=>{
     router.push('/insurancetype')
@@ -27,14 +27,16 @@ const [animationTriggered, setAnimationTriggered] = useState(false);
       <div className="main-container">
         <div className="box">
           <div   className="card1">
-          <div onClick={handleCustomer} className={`card ${animationTriggered ? 'animated' : ''}`}>
+          <div onClick={handleEmployee} className={`card ${animationTriggered ? 'animated' : ''}`}>
               <div  className="info">
-                <h5>Customer</h5>
+                <h5>Employee</h5>
             </div>
           
             </div>
-            <div  onClick={handleAgent} className={`card ${animationTriggered ? 'animated' : ''}`}><div className="info">
+            <div  onClick={handleInsurance} className={`card ${animationTriggered ? 'animated' : ''}`}><div className="info">
             <h5>Insurance</h5>
+            <h5>Plan</h5>
+
             </div>
            
             </div>
