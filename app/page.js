@@ -46,7 +46,7 @@ const page = () => {
         throw new ValidationError("plz enter password")
       }
       const response = await userLogin(userName, password, role);
-      console.log(response);
+      console.log(response,"***************************");
       localStorage.setItem("auth", response.headers.auth);
       localStorage.setItem("username", response.data.username);
       localStorage.setItem("id", response.data.id);
@@ -76,7 +76,7 @@ const page = () => {
       if (response.data.role == "Customer") {
         MessageSuccess("login sucessful")
 
-        router.push('/customer');
+        router.push('/customerdashboard');
 
       }
     }

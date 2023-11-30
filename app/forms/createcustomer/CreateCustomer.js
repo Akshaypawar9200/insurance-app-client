@@ -129,6 +129,7 @@ const CreateCustomer = ({ }) => {
       formdata.append("addharcard",adhar)
       formdata.append("pancard",pancard)
       formdata.append("data",newData );
+      console.log(":::::::::::::::::::::::::::::::::",formdata);
       const response = await CreateNewCustomer(formdata)
       console.log(response.data);
    

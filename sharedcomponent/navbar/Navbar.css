@@ -2,6 +2,8 @@
     background-color: #333;
     color: #fff;
     padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
   }
   
   .navbar-container {
@@ -37,4 +39,22 @@
     color: #f8f8f8; 
   }
 
+.buttons{
+  display: flex;
   
+  
+
+}
+button{
+  margin: 9px;
+}
+.reset-button{
+  background-color:green;
+
+}
+.logout{
+  background-color: red;
+}
+.profile{
+  background-color: skyblue;
+}

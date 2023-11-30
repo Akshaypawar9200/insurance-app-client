@@ -3,12 +3,12 @@ import toast from "react-hot-toast";
 
 export const MessageSuccess=(message)=>{
     // enqueueSnackbar(message,{variant:"success"})
-    toast.success(message)
+    toast.success(message,{position:"bottom-left"})
 }
 
 export const MessageError=(message)=>{
     // enqueueSnackbar(message,{variant:"error"})
-    toast.error(message)
+    toast.error(message,{position:"bottom-left"})
 }
 
 // export const MessageWarning=(message)=>{

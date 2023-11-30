@@ -19,6 +19,7 @@ useEffect(() => {
       page:noOfPages
     }
     const response=await getAllInsuranceType(params)
+    
     setInsuranceTypeData(prev=>response.data)
     setCount(prev=>response?.headers["x-total-count"])
   }

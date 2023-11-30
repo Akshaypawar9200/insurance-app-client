@@ -1,0 +1,49 @@
+/* style.css */
+
+.profile-main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  .profiles {
+    background-color: #f0f0f0;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+  }
+  
+  .profile-form {
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* .profile-image {
+    text-align: center;
+  }
+   */
+  .profile-image img {
+    width: 150px; /* Adjust according to your preference */
+    height: 150px; /* Adjust according to your preference */
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 10px;
+  }
+  
+  .profile-details {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .profile-field {
+    margin-bottom: 15px;
+  }
+  
+  .profile-field label {
+    font-weight: bold;
+  }
+  
+  /* Other styles as needed */
+  

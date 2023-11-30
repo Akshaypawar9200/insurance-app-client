@@ -7,6 +7,7 @@ import { enqueueSnackbar, SnackbarProvider } from "notistack";
 import Modal from '@mui/material/Modal';
 import {logout as logout } from '../../lib/logout/Logout'
 import {resetPasswordDashboard as resetPasswordDashboard} from '../../lib/resetPassword/resetPassword'
+import { useRouter } from 'next/navigation';
 
 const style = {
   position: 'absolute',
@@ -20,6 +21,7 @@ const style = {
   p: 4
 };
 const Navbar = () => {
+  const router = useRouter()
   const [open, setOpen] = React.useState(false);
   const[oldpassword,setOldpassword]=React.useState("")
   const[newpassword,setNewpassword]=React.useState("")
@@ -35,7 +37,10 @@ const Navbar = () => {
     localStorage.clear()
     router.push("/")
   }
-  let username=localStorage.getItem("username")
+  const handleProfile=async()=>{
+    router.push("/profile")
+  }
+ 
   const getOldPassword=(e)=>{
     
     setOldpassword(e.target.value)
@@ -43,6 +48,8 @@ const Navbar = () => {
   const getNewPassword=(e)=>{
     setNewpassword(e.target.value)
   }
+
+  
   const resetPassword=async(e)=>{
     e.preventDefault()
       try {
@@ -58,7 +65,7 @@ const Navbar = () => {
           enqueueSnackbar("plz enter new password", { variant: "error" })
           return
         }
- 
+        let username=localStorage.getItem("username")
         const res=await resetPasswordDashboard(username,oldpassword,newpassword)
      
         enqueueSnackbar('password reset sucessfully', { variant: "success" })
@@ -80,12 +87,14 @@ const Navbar = () => {
       </div>
       <div>
  
- 
-          <button onClick={handleOpen}>Reset Password</button>
+    <div className='buttons'>
+    <button className='reset-button' onClick={handleOpen}>Reset Password</button>
           
-          <button onClick={handleLogout}>Logout</button>
+          <button className='logout' onClick={handleLogout}>Logout</button>
+          <button className='profile' onClick={handleProfile}>Profile</button>
       
-       
+    </div>
+          
      
 
      
@@ -106,8 +115,6 @@ const Navbar = () => {
           </Button>
       </form>
         </Box>
-
-
       </Modal>
     </div>
     </nav>
