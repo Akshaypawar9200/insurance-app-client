@@ -20,6 +20,9 @@ const [animationTriggered, setAnimationTriggered] = useState(false);
   const handleInsuranceType=()=>{
     router.push('/insurancetype')
   }
+  const handleStateCity=()=>{
+    router.push('/admindasboardcitystate')
+  }
   return (
     <>
       <Navbar/>
@@ -48,8 +51,10 @@ const [animationTriggered, setAnimationTriggered] = useState(false);
             </div>
             
             </div>
-            <div className={`card ${animationTriggered ? 'animated' : ''}`}><div className="info">
-            <h5>Plan Type</h5>
+            <div onClick={handleStateCity} className={`card ${animationTriggered ? 'animated' : ''}`}><div className="info">
+            <h5>State</h5>
+            <h5>City</h5>
+
             </div>
               
             </div>
