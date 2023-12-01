@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
 import Spinner from "../../../sharedcomponent/spinner/Spinner";
 import { MessageError, MessageSuccess } from "../../../error/Error";
-import { CreateNewEmployee as CreateNewEmployee } from "../../../lib/employee/CreateNewEmployee";
 import { SnackbarProvider } from "notistack";
-import { CreateNewInsurance } from "@/lib/employee/Insurance";
 import { getAllInsuranceType } from "@/lib/employee/GetAllInsuranceType";
 import { CreateNewPlan } from "@/lib/admin/plan/Plan";
 const CreatePlan = ({ handleSubmit }) => {
@@ -76,7 +74,7 @@ const CreatePlan = ({ handleSubmit }) => {
           "Please enter a commissionAmount (only letters and spaces allowed)."
         );
       }
-      const formData = new FormData();
+      
 
       let data = {
         planName: planName,

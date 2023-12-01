@@ -1,5 +1,6 @@
 'use client'
-import CreatePolicy from '@/app/forms/createpolicy/createPolicy'
+
+import CreatePolicy from '@/app/forms/createpolicy/CreatePolicy'
 import React from 'react'
 
 const page = () => {

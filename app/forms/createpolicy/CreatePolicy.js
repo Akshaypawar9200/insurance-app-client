@@ -3,7 +3,8 @@ import { useEffect, useState } from "react";
 import Spinner from "../../../sharedcomponent/spinner/Spinner";
 import { MessageError, MessageSuccess } from "../../../error/Error";
 import { getAllAgent } from "@/lib/employee/getAllAgent";
-
+import {getAllPlan as getAllPlan}from '../../../lib/admin/plan/Plan'
+import{CreatePolicyes as CreatePolicyes}from '../../../lib/customer/policy/CreatePolicy'
 
 const CreatePolicy = () => {
   const paymentMode=['Credit card/Debit card','UPI','Cash']
@@ -14,24 +15,16 @@ const CreatePolicy = () => {
   const[typeOfPremium,setTypeOfPremium]=useState()
   const[paymentMethods,setPaymentMethods]=useState()
   const[planId,setPlanId]=useState()
-  const[agentId,setAgentId]=useState()
   const[planData,setPlanData]=useState([])
-  const[agentData,setAgetData]=useState([])
+ 
 
 const handlePlan=async()=>{
-const res=await GetAllPlan()
+const response=await getAllPlan()
 setPlanData(response.data)
 }
-
-
-
-const handleAllAgent=async()=>{
-    const res=await getAllAgent()
-    setAgetData(response.data)
-    }
 useEffect(() => {
     handlePlan()
-    handleAllAgent()
+
 }, [])
 
 
@@ -41,30 +34,30 @@ useEffect(() => {
       setIsLoading((prev) => true);
      
         
-      if (amount.length==0) {
+      // if (amount.length==0) {
        
-        throw new Error('Please enter a amount');
-      }
+      //   throw new Error('Please enter a amount');
+      // }
 
-      if (years.length==0) {
+      // if (years.length==0) {
        
-        throw new Error('Please enter years');
-      }
+      //   throw new Error('Please enter years');
+      // }
       
       
-      if (typeOfPremium.length==0||!namePattern.test(typeOfPremium)) {
+      // if (typeOfPremium.length==0||!namePattern.test(typeOfPremium)) {
        
-        throw new Error('Please enter a typeOfPremium (only letters and spaces allowed).');
-      }
-      if (paymentMethods.length==0) {
+      //   throw new Error('Please enter a typeOfPremium (only letters and spaces allowed).');
+      // }
+      // if (paymentMethods.length==0) {
        
-        throw new Error('Please select paymentMethods');
-      }
-     
-    //   const response = await CreateNewEmployee(formdata)
-    //   console.log(response.data);
+      //   throw new Error('Please select paymentMethods');
+      // }
 
-    //   MessageSuccess("Created Added");
+      const response = await CreatePolicyes(planId,amount,years,typeOfPremium,paymentMethods)
+      console.log(response.data);
+
+      MessageSuccess("Policy Created");
       return;
     } catch (error) {
       MessageError(error.message);
@@ -96,28 +89,12 @@ useEffect(() => {
                   <option value="">Select Plan</option>
                   {planData.map((plan) => (
                     <option key={plan.id} value={plan.id}>
-                      {plan.name}
+                      {plan.planName}
                     </option>
                   ))}
                 </select>
               </div>
-              <div>
-                <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                  Agent Name
-                </label>
-                <select
-                  value={agentId}
-                  onChange={(e) => setAgentId(e.target.value)}
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                >
-                  <option value="">Select Agent</option>
-                  {agentData.map((agent) => (
-                    <option key={agent.id} value={agent.id}>
-                      {agent.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
+              
               <div>
                 <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                   Amount
@@ -125,7 +102,7 @@ useEffect(() => {
                 <input
                   type="number"
                   value={amount}
-                  onChange={(e) => setAmount(e.target.value)}
+                  onChange={(e) => setAmount(Number(e.target.value))}
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                 />
               </div>
@@ -136,7 +113,7 @@ useEffect(() => {
                 <input
                   type="number"
                   value={years}
-                  onChange={(e) => setYears(e.target.value)}
+                  onChange={(e) => setYears(Number(e.target.value))}
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                 />
               </div>
