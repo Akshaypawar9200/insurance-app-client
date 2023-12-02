@@ -8,6 +8,7 @@ import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import { emphasize } from '@mui/material';
 import{createFeedback as createFeedback}from '../../../lib/feedback/CreateFeedback'
+import { getAllFeeedbackByPolicyId } from '@/lib/feedback/GetFeedbackByPolicyId';
 
 const style = {
   position: 'absolute',
@@ -26,12 +27,16 @@ const page = () => {
   const namePattern = /^[A-Za-z ]+$/;
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const handleOpens = () => setOpens(true);
+  const handleCloses = () => setOpens(false);
   const [open, setOpen] = React.useState(false);
+  const [opens, setOpens] = React.useState(false);
   const[policyData,setPolicyData]=useState([])
   const [count, setCount] = useState(1);
   const [limit, setLimit] = useState(2);
   const [noOfPages, setNoOfPages] = useState(1);
   const[policyId,setPoliyId]=useState()
+  const[updateFeedback,setUpdatedFeedback]=useState([])
   const[customerId]=useState(localStorage.getItem("id") || "")
 
   const[title,setTitle]=useState("")
@@ -53,6 +58,15 @@ modelOpen()
 const modelOpen=(e)=>{
   // e.preventDefault();
   handleOpen()
+}
+const  modelOpenforStatus=()=>{
+  handleOpens()
+}
+const viewFeedbackFunction=async(d)=>{
+  const response=await getAllFeeedbackByPolicyId(d.id)
+  setUpdatedFeedback(response.data)
+  modelOpenforStatus()
+  
 }
 
 const handleFeedback=async(e)=>{
@@ -131,6 +145,23 @@ const handleFeedback=async(e)=>{
 
 
       </Modal>
+      <Modal
+        opens={opens}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+        <Table
+    data={policyData}
+    count={count}
+    limit={limit}
+    setPage={setNoOfPages}
+    />
+        </Box>
+
+
+      </Modal>
     <CreatePolicy handleSubmit={handleAllPolicy}/>
     <Table
     data={policyData}
@@ -139,7 +170,9 @@ const handleFeedback=async(e)=>{
     page={page}
     setPage={setNoOfPages}
     feedbackButton={true}
+    viewFeedbackButton={true}
     feedbackFunction={feedbackFunction}
+    viewFeedbackFunction={viewFeedbackFunction}
     />
     </>
   )
