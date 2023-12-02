@@ -51,7 +51,7 @@ const CreateEmployee = ({handleSubmit}) => {
       const response = await CreateNewEmployee(formdata)
       handleSubmit()
 
-      MessageSuccess("Created Added");
+      MessageSuccess("Employee Created");
       return;
     } catch (error) {
       MessageError(error.message);

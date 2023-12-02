@@ -34,7 +34,7 @@ const [animationTriggered, setAnimationTriggered] = useState(false);
           
             </div>
             <div  onClick={handleAgent} className={`card ${animationTriggered ? 'animated' : ''}`}><div className="info">
-            <h5>Insurance</h5>
+            <h5>Agent</h5>
             </div>
            
             </div>

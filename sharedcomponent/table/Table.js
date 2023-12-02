@@ -1,8 +1,9 @@
 import React from 'react';
 import PaginationShared from '../pagination/PaginationShared';
 
-const Table = ({ data, count, limit, setPage, page, setLimit, updateButton, deleteButton, viewButton, updateFunction, setShow, deleteFunction, infoFunction }) => {
+const Table = ({ data, count, limit, setPage, page, setLimit, updateButton, deleteButton,feedbackButton,viewButton,feedbackFunction,updateFunction, setShow, deleteFunction, infoFunction }) => {
   let headerOfUserTable, rowsOfUserTable;
+  
   if (data.length > 0) {
     let key = Object.keys(data[0]);
 
@@ -50,6 +51,13 @@ const Table = ({ data, count, limit, setPage, page, setLimit, updateButton, dele
         singleRow.push(
           <td key={key.length + 2} className="px-4 py-2">
             <button className="btn-primary3" onClick={() => { infoFunction(d) }}>View</button>
+          </td>
+        );
+      }
+      if (feedbackButton === true) {
+        singleRow.push(
+          <td key={key.length + 2} className="px-4 py-2">
+            <button className="btn-primary3" onClick={() => { feedbackFunction(d) }}>Feedback</button>
           </td>
         );
       }

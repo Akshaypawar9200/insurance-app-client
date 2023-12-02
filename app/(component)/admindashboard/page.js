@@ -23,6 +23,9 @@ const [animationTriggered, setAnimationTriggered] = useState(false);
   const handleStateCity=()=>{
     router.push('/admindasboardcitystate')
   }
+  const handleAllFeedback=()=>{
+    router.push('/feedback')
+  }
   return (
     <>
       <Navbar/>
@@ -65,7 +68,7 @@ const [animationTriggered, setAnimationTriggered] = useState(false);
               <div className="info">
               <h5>Policies</h5>
               </div></div>
-            <div className={`card ${animationTriggered ? 'animated' : ''}`}>
+            <div onClick={handleAllFeedback} className={`card ${animationTriggered ? 'animated' : ''}`}>
               <div className="info">
               <h5>Feedback</h5>
               </div></div>

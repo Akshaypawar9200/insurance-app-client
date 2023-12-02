@@ -6,7 +6,7 @@ import { getAllAgent } from "@/lib/employee/getAllAgent";
 import {getAllPlan as getAllPlan}from '../../../lib/admin/plan/Plan'
 import{CreatePolicyes as CreatePolicyes}from '../../../lib/customer/policy/CreatePolicy'
 
-const CreatePolicy = () => {
+const CreatePolicy = ({handleSubmit}) => {
   const paymentMode=['Credit card/Debit card','UPI','Cash']
   const [isLoading, setIsLoading] = useState(false);
   const namePattern = /^[A-Za-z ]+$/;
@@ -56,7 +56,7 @@ useEffect(() => {
 
       const response = await CreatePolicyes(planId,amount,years,typeOfPremium,paymentMethods)
       console.log(response.data);
-
+      handleSubmit()
       MessageSuccess("Policy Created");
       return;
     } catch (error) {

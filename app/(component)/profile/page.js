@@ -33,7 +33,8 @@ const[mobileNo,setMobileNo]=useState()
 const[pincode,setPincode]=useState()
 const[nominee,setNominee]=useState("")
 const[nomineeRelation,setNomineeRelation]=useState("")
-const role=localStorage.getItem("role")
+const[role]=useState(localStorage.getItem("role") || "")
+
 
 const handleMOdelButton=(e)=>{
 e.preventDefault()

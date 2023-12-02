@@ -14,11 +14,11 @@ const page = () => {
     const handleCreatePolicy = () => {
         router.push('/policyforcustomer')
     }
-    const handleAgent = () => {
-        // router.push('/agent')
+    const handleplan = () => {
+        router.push('/plans')
     }
     const handleInsuranceType = () => {
-        // router.push('/insurancetype')
+        router.push('/insurancetype')
     }
     return (
         <>
@@ -32,7 +32,7 @@ const page = () => {
                   <h5>Insurance Type</h5>
                 </div>
               </div>
-              <div className={`card ${animationTriggered ? 'animated' : ''}`}>
+              <div onClick={handleplan} className={`card ${animationTriggered ? 'animated' : ''}`}>
                 <div className="info">
                   <h5>Plan Type</h5>
                 </div>
