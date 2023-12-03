@@ -20,6 +20,15 @@ const [animationTriggered, setAnimationTriggered] = useState(false);
   const handleInsuranceType=()=>{
     router.push('/insurancetype')
   }
+  const handleAllPolicy=()=>{
+    router.push('/employeepolicydashboard')
+  }
+  const handleAllFeedback=()=>{
+    router.push('/employeefeedbackdashboard')
+  }
+  const handleAllPlan=()=>{
+    router.push('/employeedashboardforplan')
+  }
   return (
     <>
       <Navbar/>
@@ -46,7 +55,7 @@ const [animationTriggered, setAnimationTriggered] = useState(false);
             </div>
             
             </div>
-            <div className={`card ${animationTriggered ? 'animated' : ''}`}><div className="info">
+            <div onClick={handleAllPlan}className={`card ${animationTriggered ? 'animated' : ''}`}><div className="info">
             <h5>Plan Type</h5>
             </div>
               
@@ -54,11 +63,11 @@ const [animationTriggered, setAnimationTriggered] = useState(false);
 
           </div>
           <div className="card1">
-            <div className={`card ${animationTriggered ? 'animated' : ''}`}>
+            <div onClick={handleAllPolicy}  className={`card ${animationTriggered ? 'animated' : ''}`}>
               <div className="info">
               <h5>Policies</h5>
               </div></div>
-            <div className={`card ${animationTriggered ? 'animated' : ''}`}>
+            <div onClick={handleAllFeedback} className={`card ${animationTriggered ? 'animated' : ''}`}>
               <div className="info">
               <h5>Feedback</h5>
               </div></div>

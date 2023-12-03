@@ -9,6 +9,7 @@ import Box from '@mui/material/Box';
 import { emphasize } from '@mui/material';
 import{createFeedback as createFeedback}from '../../../lib/feedback/CreateFeedback'
 import { getAllFeeedbackByPolicyId } from '@/lib/feedback/GetFeedbackByPolicyId';
+import { useRouter } from 'next/navigation';
 
 const style = {
   position: 'absolute',
@@ -24,6 +25,7 @@ const style = {
 };
 
 const page = () => {
+  const router=useRouter()
   const namePattern = /^[A-Za-z ]+$/;
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -59,15 +61,11 @@ const modelOpen=(e)=>{
   // e.preventDefault();
   handleOpen()
 }
-const  modelOpenforStatus=()=>{
-  handleOpens()
+const viewFeedbackFunction=(d)=>{
+setPoliyId(d.id)
+  router.push(`/feedbacktrac/feedbackstatus/${d.id}`)
 }
-const viewFeedbackFunction=async(d)=>{
-  const response=await getAllFeeedbackByPolicyId(d.id)
-  setUpdatedFeedback(response.data)
-  modelOpenforStatus()
-  
-}
+
 
 const handleFeedback=async(e)=>{
   e.preventDefault();
@@ -105,7 +103,7 @@ const handleFeedback=async(e)=>{
         <Box sx={style}>
           <form className="space-y-6 bg-transparent" action="#">
             <h5 className="text-xl font-medium text-gray-900 dark:text-white">
-              Create Feedback
+            Create Feedback
             </h5>
             <div>
               <label className="required block mb-2 text-sm font-medium text-gray-900 dark:text-white">
@@ -145,23 +143,7 @@ const handleFeedback=async(e)=>{
 
 
       </Modal>
-      <Modal
-        opens={opens}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style}>
-        <Table
-    data={policyData}
-    count={count}
-    limit={limit}
-    setPage={setNoOfPages}
-    />
-        </Box>
-
-
-      </Modal>
+    
     <CreatePolicy handleSubmit={handleAllPolicy}/>
     <Table
     data={policyData}
