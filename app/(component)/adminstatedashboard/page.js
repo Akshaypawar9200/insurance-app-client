@@ -1,27 +1,18 @@
 "use client";
 import Modal from "@mui/material/Modal";
-import Button from "@mui/material/Button";
+
 import Box from "@mui/material/Box";
-import CreateCustomer from "@/app/forms/createcustomer/CreateCustomer";
-import CreateEmployee from "@/app/forms/createemployee/CreateEmployeee";
-import { getAllCustomer } from "@/lib/employee/getAllCustomer";
+
 import Table from "@/sharedcomponent/table/Table";
 import "./style.css";
 import React, { useEffect, useState } from "react";
-import { deleteCustomer as deleteCustomer } from "../../../lib/employee/DeleteCustomer";
-import { updateCustomer as updateCustomer } from "../../../lib/employee/UpdateCustomer";
-import ReactDatePicker from "react-datepicker";
+
 import { getAllState as getAllState } from "../../../lib/state/GetAllState";
-import { getAllCityByStateId as getAllCityByStateId } from "../../../lib/state/GetStateIdByCity";
+
 import { enqueueSnackbar, SnackbarProvider } from "notistack";
-import {
-  deleteEmployee,
-  getAllEployee,
-  updateEmployee,
-} from "@/lib/employee/CreateNewEmployee";
-import CreateInsurance from "@/app/forms/createInsurance/CreateInsurance";
-import { getAllInsuranceType } from "@/lib/employee/GetAllInsuranceType";
-import { deleteInsurance, updateInsurance } from "@/lib/employee/Insurance";
+import employee from 'next/image'
+
+
 import CreateState from "@/app/forms/createstate/createState";
 import { updateState } from "@/lib/state/CreateState";
 const style = {

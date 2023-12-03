@@ -66,6 +66,9 @@ setPoliyId(d.id)
   router.push(`/feedbacktrac/feedbackstatus/${d.id}`)
 }
 
+const paymentFunction=(d)=>{
+  router.push(`/paymentdetailsforcustomerdashboard/payments/${d.id}`)
+}
 
 const handleFeedback=async(e)=>{
   e.preventDefault();
@@ -155,6 +158,8 @@ const handleFeedback=async(e)=>{
     viewFeedbackButton={true}
     feedbackFunction={feedbackFunction}
     viewFeedbackFunction={viewFeedbackFunction}
+    paymentButton={true}
+    paymentFunction={paymentFunction}
     />
     </>
   )

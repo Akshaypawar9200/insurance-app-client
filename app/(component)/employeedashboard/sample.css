@@ -5,6 +5,7 @@
     align-items: center;
     height: 100vh;
     font-family: cursive;
+    text-align: center;
   }
   
   .box {
@@ -31,6 +32,7 @@
     height: 200px !important; 
     width: 400px;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;

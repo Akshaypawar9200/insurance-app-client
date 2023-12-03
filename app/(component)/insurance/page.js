@@ -125,7 +125,7 @@ const page = () => {
       handleSubmit();
       if (res.status === 200) {
         setUpdateTable((prev) => !prev);
-        enqueueSnackbar("Employee updated", { variant: "success" });
+        enqueueSnackbar("updated", { variant: "success" });
       }
       handleClose();
     } catch (error) {

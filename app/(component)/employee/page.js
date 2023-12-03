@@ -8,13 +8,14 @@ import { getAllCustomer } from '@/lib/employee/getAllCustomer'
 import Table from '@/sharedcomponent/table/Table'
 import './style.css'
 import React, { useEffect, useState } from 'react'
-import {deleteCustomer as deleteCustomer}from '../../../lib/employee/DeleteCustomer'
-import {updateCustomer as updateCustomer} from '../../../lib/employee/UpdateCustomer'
+import { deleteCustomer as deleteCustomer } from '../../../lib/employee/DeleteCustomer'
+import { updateCustomer as updateCustomer } from '../../../lib/employee/UpdateCustomer'
 import ReactDatePicker from "react-datepicker";
-import {getAllState as getAllState} from '../../../lib/state/GetAllState'
-import {getAllCityByStateId as getAllCityByStateId} from '../../../lib/state/GetStateIdByCity'
+import { getAllState as getAllState } from '../../../lib/state/GetAllState'
+import { getAllCityByStateId as getAllCityByStateId } from '../../../lib/state/GetStateIdByCity'
 import { enqueueSnackbar, SnackbarProvider } from "notistack";
 import { deleteEmployee, getAllEployee, updateEmployee } from '@/lib/employee/CreateNewEmployee';
+import { MessageError, MessageSuccess } from '@/error/Error';
 const style = {
   position: 'absolute',
   top: '50%',
@@ -30,7 +31,7 @@ const style = {
 const page = () => {
   const namePattern = /^[A-Za-z ]+$/;
   const [open, setOpen] = React.useState(false);
-  const relation=["son","father","mother","wife","daughter"]
+  const relation = ["son", "father", "mother", "wife", "daughter"]
   const [employeeName, setemployeeName] = useState("");
   const [email, setEmail] = useState("");
   const [dob, setDob] = useState("")
@@ -41,44 +42,82 @@ const page = () => {
   const [nominee, setNominee] = useState("")
   const [nomineeRelation, setNomineeRelation] = useState("")
   const [customerAddress, setCustomerAddress] = useState("");
-  const [employeeData,setemployeeData]=useState([])
+  const [employeeData, setemployeeData] = useState([])
   const [count, setCount] = useState(1);
   const [limit, setLimit] = useState(2);
   const [noOfPages, setNoOfPages] = useState(1);
 
-  const [updateTable,setUpdateTable]=useState()
-  const[empId,setEmpId]=useState()
-  const[cityData,setCityData]=useState([])
-  const[allState,setAllState]=useState([])
-  const[stateId,setStateId]=useState()
+  const [updateTable, setUpdateTable] = useState()
+  const [empId, setEmpId] = useState()
+  const [cityData, setCityData] = useState([])
+  const [allState, setAllState] = useState([])
+  const [stateId, setStateId] = useState()
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  const [reset, setReset] = useState(false)
+  const[verify,setVerify]=useState(false)
+  const[filterName,setFilterName]=useState("")
+  const[filterUsername,setFilterUsername]=useState("")
+  const[filterEmail,setFilterEmail]=useState("")
+  const[filterAdmin,setFilterAdmin]=useState()
 
- 
-   
-   useEffect(() => {
- 
-   }, [])
+  // handle filter button
+  const handleFilterButton = (e) => {
+    try {
+      if (!filterName && !filterUsername && !filterEmail) {
+
+        throw new Error("Please enter at least one filter field");
+        
+      }
+      setNoOfPages(prev => 1) 
+      handleSubmit(e)
+    } catch (error) {
+      MessageError(error.message) 
+    }
+  };
+
+     // Function to reset filter inputs and trigger a reset
+     const resetButton = () => {
+      try {
+        setFilterName(prev => "")
+        setFilterUsername(prev => "")
+        setFilterEmail(prev => "")
+      
+        setNoOfPages(1); 
+        setLimit(1); 
+        setReset((prev) => !prev);
+        handleSubmit(); 
+      } catch (error) {
+       console.log(error);
+      }
+    }
+
+  useEffect(() => {
+
+  }, [])
 
   useEffect(() => {
     handleSubmit()
-    }, [limit,noOfPages])
+  }, [limit, noOfPages])
 
-    useEffect(() => {
-      handleSubmit()
-      }, [updateTable])
-  const handleSubmit=async()=>{
-    const params={
-      limit:limit,
-      page:noOfPages
+  useEffect(() => {
+    handleSubmit()
+  }, [updateTable])
+  const handleSubmit = async () => {
+    const params = {
+      limit: limit,
+      page: noOfPages,
+      employeeName:filterName,
+      username:filterUsername,
+      email:filterEmail
     }
-    const response=await getAllEployee(params)
-    setemployeeData(prev=>response.data)
-    setCount(prev=>response?.headers["x-total-count"])
+    const response = await getAllEployee(params)
+    setemployeeData(prev => response.data)
+    setCount(prev => response?.headers["x-total-count"])
   }
   const updateFunction = async (d) => {
-  
+
     setOpen((prev) => true);
     setemployeeName(d.employeeName);
     setEmail(d.email);
@@ -95,61 +134,61 @@ const page = () => {
   const handleUpdate = async (e) => {
     e.preventDefault();
     try {
-      if (employeeName.length==0||!namePattern.test(employeeName)) {
-       
+      if (employeeName.length == 0 || !namePattern.test(employeeName)) {
+
         throw new Error('Please enter a employeeName (only letters and spaces allowed).');
       }
       // if (state.length==0||!namePattern.test(state)) {
-       
+
       //   throw new Error('Please enter a stateName (only letters and spaces allowed).');
       // }
       // if (city.length==0||!namePattern.test(city)) {
-       
+
       //   throw new Error('Please enter a cityName (only letters and spaces allowed).');
       // }
       // if (pincode.length==0) {
-       
+
       //   throw new Error('plz enter pincode');
       // }
       // if (mobileno.length==0) {
-       
+
       //   throw new Error('Please enter a mobileNo');
       // }
       // if (nominee.length==0||!namePattern.test(nominee)) {
-       
+
       //   throw new Error('Please enter a nominee (only letters and spaces allowed).');
       // }
       // if (nomineeRelation.length==0||!namePattern.test(nomineeRelation)) {
-       
+
       //   throw new Error('Please enter a nomineeRelation (only letters and spaces allowed).');
       // }
       // if (customerAddress.length==0||!namePattern.test(customerAddress)) {
-       
+
       //   throw new Error('Please enter a customerAddress (only letters and spaces allowed).');
       // }
 
-      if (email.length==0) {
+      if (email.length == 0) {
         throw new Error("invalid email");
       }
-    const body={
+      const body = {
 
 
-        "employeeName":employeeName,
-        "email":email,
-    
+        "employeeName": employeeName,
+        "email": email,
 
-    }
 
-      
-      const res = await updateEmployee(body,empId);
+      }
+
+
+      const res = await updateEmployee(body, empId);
       handleSubmit();
       if (res.status === 200) {
         setUpdateTable((prev) => !prev);
-        enqueueSnackbar('Employee updated', { variant: 'success' });
+        MessageSuccess("update sucessfully")
       }
       handleClose();
     } catch (error) {
-    console.log(error);
+      MessageError(error.message)
     }
   };
   const deleteFunction = async (d) => {
@@ -159,84 +198,115 @@ const page = () => {
 
       if (res.status === 200) {
         setUpdateTable((prev) => !prev);
-        enqueueSnackbar('Delete successful', { variant: 'success' });
+        MessageSuccess("delete sucessfully")
         handleSubmit()
       }
     } catch (error) {
-      console.log(error);
+      MessageError(error.message)
     }
   };
+
+  const handleName=(e)=>{
+    setFilterName(e.target.value)
+  }
+  const handleUserName=(e)=>{
+    setFilterUsername(e.target.value)
+  }
+  const handleEmail=(e)=>{
+    setFilterEmail(e.target.value)
+  }
+
+
   return (
     <>
       <SnackbarProvider autoHideDuration={3000} />
-       <Modal
+      <Modal
         open={open}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-        <form className="space-y-6 bg-transparent" action="#">
-              <h5 className="text-xl font-medium text-gray-900 dark:text-white">
-                Update Employee
-              </h5>
-              <div>
-                <label className="required block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                  Name
-                </label>
-                <input
+          <form className="space-y-6 bg-transparent" action="#">
+            <h5 className="text-xl font-medium text-gray-900 dark:text-white">
+              Update Employee
+            </h5>
+            <div>
+              <label className="required block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                Name
+              </label>
+              <input
                 value={employeeName}
-                  type="text"
-                  onChange={(e) => {
-                    setemployeeName(e.target.value);
-                  }}
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                ></input>
-              </div>
-              <div>
-                <label className="required block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                  Email
-                </label>
-                <input
+                type="text"
+                onChange={(e) => {
+                  setemployeeName(e.target.value);
+                }}
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+              ></input>
+            </div>
+            <div>
+              <label className="required block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                Email
+              </label>
+              <input
                 value={email}
-                  type="email"
-                  onChange={(e) => {
-                    setEmail(e.target.value);
-                  }}
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                ></input>
-              </div>
-              
-              <button
-                type="button"
-                className="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                onClick={handleUpdate}
-              >
-                Update Employee
-              </button>
-            </form>
+                type="email"
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                }}
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+              ></input>
+            </div>
+
+            <button
+              type="button"
+              className="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              onClick={handleUpdate}
+            >
+              Update Employee
+            </button>
+          </form>
         </Box>
 
 
       </Modal>
-   <div className='customer-part'>
-  <CreateEmployee handleSubmit={handleSubmit}/>
+      <div className='customer-part'>
+        <CreateEmployee handleSubmit={handleSubmit} />
 
-   </div>
- 
-    <Table
-     data={employeeData}
-    count={count}
-    limit={limit}
-    page={page}
-    setPage={setNoOfPages}
-    updateButton={true}
-    deleteButton={true}
-    updateFunction={updateFunction}
-    deleteFunction={deleteFunction}
-    setShow={setOpen}
-     />
- 
+      </div>
+      <div className="parent-filter">
+      <div className="form-cont">
+        <div>
+          <input type="text" placeholder="Name" onChange={handleName} value={filterName} />
+        </div>
+        <div>
+          <input type="text" placeholder="Username" onChange={handleUserName} value={filterUsername} />
+        </div>
+         <div>
+          <input type="email" placeholder="Email" onChange={handleEmail} value={filterEmail} />
+        </div>
+     
+        <div>
+          <button className="btn btn-success" onClick={handleFilterButton}>Submit</button>
+        </div>
+        <div>
+          <button type="button" className="btn btn-danger" onClick={resetButton}>Reset</button>
+        </div>
+      </div>
+    </div>
+      <Table
+        data={employeeData}
+        count={count}
+        limit={limit}
+        page={page}
+        setPage={setNoOfPages}
+        updateButton={true}
+        deleteButton={true}
+        updateFunction={updateFunction}
+        deleteFunction={deleteFunction}
+        setShow={setOpen}
+      />
+
     </>
   )
 }
