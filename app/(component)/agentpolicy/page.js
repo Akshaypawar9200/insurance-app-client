@@ -8,6 +8,7 @@ import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import { emphasize } from '@mui/material';
 import{createFeedback as createFeedback}from '../../../lib/feedback/CreateFeedback'
+import CreatePolicyAgent from '@/app/forms/createpolicyAgent/CreatePolicyAgent';
 
 const style = {
   position: 'absolute',
@@ -131,7 +132,7 @@ const handleFeedback=async(e)=>{
 
 
       </Modal>
-    <CreatePolicy handleSubmit={handleAllPolicy}/>
+    <CreatePolicyAgent handleSubmit={handleAllPolicy}/>
     <Table
     data={policyData}
     count={count}

@@ -5,8 +5,9 @@ import { MessageError, MessageSuccess } from "../../../error/Error";
 import { getAllAgent } from "@/lib/employee/getAllAgent";
 import {getAllPlan as getAllPlan}from '../../../lib/admin/plan/Plan'
 import{CreatePolicyes as CreatePolicyes}from '../../../lib/customer/policy/CreatePolicy'
+import { CreatePolicyByAgent, getAllCustomerByAgentId } from "@/lib/agent/Agent";
 
-const CreatePolicy = ({handleSubmit}) => {
+const CreatePolicyAgent = ({handleSubmit}) => {
   const paymentMode=['Credit card/Debit card','UPI','Cash']
   const [isLoading, setIsLoading] = useState(false);
   const namePattern = /^[A-Za-z ]+$/;
@@ -16,15 +17,26 @@ const CreatePolicy = ({handleSubmit}) => {
   const[paymentMethods,setPaymentMethods]=useState()
   const[planId,setPlanId]=useState()
   const[planData,setPlanData]=useState([])
+  const[customerData,setCustomerData]=useState([])
  
+  const[customerId,setCustomerId]=useState("")
 
 const handlePlan=async()=>{
 const response=await getAllPlan()
 setPlanData(response.data)
 }
+const handleCustomer=async()=>{
+const agentId=localStorage.getItem('id')
+const params={
+
+}
+const response=await getAllCustomerByAgentId(params,agentId)
+
+  setCustomerData((prev)=>response.data)
+}
 useEffect(() => {
     handlePlan()
-console.log("dfdffdf",planData)
+    handleCustomer()
 }, [])
 
 
@@ -53,8 +65,14 @@ console.log("dfdffdf",planData)
        
       //   throw new Error('Please select paymentMethods');
       // }
-
-      const response = await CreatePolicyes(planId,amount,years,typeOfPremium,paymentMethods)
+const agentId=localStorage.getItem('id')
+      const body={
+        "amount":Number(amount),
+        "years":Number(years),
+        "typeOfPremium":typeOfPremium,
+        "paymentMethod":paymentMethods
+      }
+      const response = await CreatePolicyByAgent(planId,agentId,body)
       console.log(response.data);
       handleSubmit()
       MessageSuccess("Policy Created");
@@ -77,6 +95,23 @@ console.log("dfdffdf",planData)
               <h5 className="text-xl font-medium text-gray-900 dark:text-white">
                 Create Policy
               </h5>
+              <div>
+                <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                 CustomerId
+                </label>
+                <select
+                  value={customerId}
+                  onChange={(e) => setCustomerId(e.target.value)}
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                >
+                  <option value="">Select customer</option>
+                  {customerData.map((customer) => (
+                    <option key={customer.id} value={customer.id}>
+                      {customer.customerName}
+                    </option>
+                  ))}
+                </select>
+              </div>
               <div>
                 <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                   Plan Name
@@ -160,4 +195,4 @@ console.log("dfdffdf",planData)
   );
 };
 
-export default CreatePolicy;
+export default CreatePolicyAgent;
