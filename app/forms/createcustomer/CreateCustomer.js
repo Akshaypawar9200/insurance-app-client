@@ -105,9 +105,25 @@ const CreateCustomer = ({ }) => {
       if (email.length==0) {
         throw new Error("invalid email");
       }
-    
-      
-       let data={
+      let data
+    if(localStorage.getItem('role')=="Agent"){
+      data={
+        "customerName":customerName,
+        "username":username,
+        "password":password,
+        "email":email,
+        "dob":dob,
+        "address":customerAddress,
+        "state":state,
+        "city":city,
+        "pincode":pincode,
+        "mobileno":mobileno,
+        "nominee":nominee,
+        "nomineeRelation":nomineeRelation,
+        "agentId":localStorage.getItem('id')
+      }
+    }else{
+      data={
         "customerName":customerName,
         "username":username,
         "password":password,
@@ -121,6 +137,9 @@ const CreateCustomer = ({ }) => {
         "nominee":nominee,
         "nomineeRelation":nomineeRelation,
       }
+    }
+      
+        
 
       
       const newData=JSON.stringify(data)

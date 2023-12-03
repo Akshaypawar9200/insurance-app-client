@@ -25,6 +25,7 @@ import { deleteInsurance, updateInsurance } from "@/lib/employee/Insurance";
 import CreateState from "@/app/forms/createstate/createState";
 import { updateState } from "@/lib/state/CreateState";
 import CreateCity from "@/app/forms/createcity/createCity";
+import { getAllCity, updateCity } from "@/lib/city/CreateCity";
 const style = {
   position: "absolute",
   top: "50%",
@@ -69,7 +70,7 @@ const page = () => {
       limit: limit,
       page: noOfPages,
     };
-    const response = await getAllState(params);
+    const response = await getAllCity(params);
     setinsuranceType((prev) => response.data);
     setCount((prev) => response?.headers["x-total-count"]);
   };
@@ -121,7 +122,7 @@ const page = () => {
         status: status,
       };
 
-      const res = await updateState(body, id);
+      const res = await updateCity(body, id);
       handleSubmit();
       if (res.status === 200) {
         setUpdateTable((prev) => !prev);

@@ -70,7 +70,7 @@ const page = () => {
       if (response.data.role == "Agent") {
         MessageSuccess("login sucessful")
 
-        router.push('/agent');
+        router.push('/agentdashboard');
       }
 
       if (response.data.role == "Customer") {
