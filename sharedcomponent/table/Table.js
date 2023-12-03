@@ -2,7 +2,7 @@ import React from 'react';
 import PaginationShared from '../pagination/PaginationShared';
 import { colors } from '@mui/material';
 
-const Table = ({ data, count, limit, setPage, page, setLimit, updateButton, deleteButton,viewFeedbackButton,viewFeedbackFunction,feedbackButton,replyFunction,viewButton,replyButton,feedbackFunction,updateFunction, setShow, deleteFunction, infoFunction }) => {
+const Table = ({ data, count, limit, setPage, page,makePaymentButton,makePaymentFunction, setLimit,paymentButton,paymentFunction, updateButton, deleteButton,viewFeedbackButton,viewFeedbackFunction,feedbackButton,replyFunction,viewButton,replyButton,feedbackFunction,updateFunction, setShow, deleteFunction, infoFunction }) => {
   let headerOfUserTable, rowsOfUserTable;
   
   if (data.length > 0) {
@@ -14,22 +14,38 @@ const Table = ({ data, count, limit, setPage, page, setLimit, updateButton, dele
 
     rowsOfUserTable = data.map((d, rowIndex) => {
       let singleRow = [];
-
+      
 
       for (let i = 0; i < key.length; i++) {
-       
-        if (typeof d[key[i]] === 'boolean') {
+       if(key[i]=="paymentStatus"){
+        singleRow.push(
+          <td key={i} className="px-4 py-2">
+            {d[key[i]] ? 'Done' : 'Pending...'}
+          </td>
+        );
+       }
+        else if (typeof d[key[i]] === 'boolean') {
           singleRow.push(
             <td key={i} className="px-4 py-2">
               {d[key[i]] ? 'Active' : 'Inactive'}
             </td>
           );
         } else {
+         
+          if(key[i]=="paymentDate" && d['paymentDate']==null){
+            singleRow.push(
+              <td key={i} className="px-4 py-2" >
+                <button className="btn-primary3"style={{backgroundColor:'green'}} onClick={() => { makePaymentFunction(d) }}>Pay Now</button>
+              </td>
+            );
+          }
+         else{
           singleRow.push(
             <td key={i} className="px-4 py-2" >
               {d[key[i]]}
             </td>
           );
+         }
         }
       }
 
@@ -78,6 +94,14 @@ const Table = ({ data, count, limit, setPage, page, setLimit, updateButton, dele
           </td>
         );
       }
+      if (paymentButton === true) {
+        singleRow.push(
+          <td key={key.length + 2} className="px-4 py-2" >
+            <button className="btn-primary3"style={{backgroundColor:'red'}} onClick={() => { paymentFunction(d) }}>payment</button>
+          </td>
+        );
+      }
+    
 
       return <tr key={rowIndex} className={rowIndex % 2 === 0 ? "bg-gray-100" : "bg-gray-200"}>{singleRow}</tr>;
     });
@@ -97,6 +121,32 @@ const Table = ({ data, count, limit, setPage, page, setLimit, updateButton, dele
   return (
    <>
       <PaginationShared limit={limit}  offset={page}  count={count} setOffset={setPage}/>
+      {/* <div className="flex">
+     
+          <select
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+            value={limit}
+            onChange={(e) => {
+              setLimit((prev) => e.target.value);
+              let noOfPages = Math.ceil(count / e.target.value);
+              setOffset(1);
+            }}
+          >
+            <option value="1">
+              1
+            </option>
+            <option value="2">
+              2
+            </option>
+            <option value="5">
+              5
+            </option>
+            <option value="10">
+              10
+            </option>
+          </select>
+        </div> */}
+     
       <TableOfUsers />
    </>
  

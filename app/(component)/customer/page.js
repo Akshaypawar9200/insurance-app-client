@@ -14,6 +14,7 @@ import ReactDatePicker from "react-datepicker";
 import {getAllState as getAllState} from '../../../lib/state/GetAllState'
 import {getAllCityByStateId as getAllCityByStateId} from '../../../lib/state/GetStateIdByCity'
 import { enqueueSnackbar, SnackbarProvider } from "notistack";
+import { MessageError, MessageSuccess } from '@/error/Error';
 const style = {
   position: 'absolute',
   top: '50%',
@@ -159,11 +160,11 @@ const page = () => {
       handleSubmit();
       if (res.status === 200) {
         setUpdateTable((prev) => !prev);
-        enqueueSnackbar('Customer updated', { variant: 'success' });
+        MessageSuccess("update sucessfully")
       }
       handleClose();
     } catch (error) {
-    console.log(error);
+    MessageError(error.message)
     }
   };
   const deleteFunction = async (d) => {
@@ -173,10 +174,10 @@ const page = () => {
 
       if (res.status === 200) {
         setUpdateTable((prev) => !prev);
-        enqueueSnackbar('Delete successful', { variant: 'success' });
+        MessageSuccess("Delete sucessfully")
       }
     } catch (error) {
-      console.log(error);
+      MessageError(error.message)
     }
   };
   return (

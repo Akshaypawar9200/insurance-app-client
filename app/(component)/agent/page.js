@@ -8,6 +8,7 @@ import { enqueueSnackbar, SnackbarProvider } from "notistack";
 import { getAllAgent } from '@/lib/employee/getAllAgent';
 import { deleteAgent } from '@/lib/employee/DeleteAgent';
 import { updateAgent } from '@/lib/employee/UpdateAgent';
+import { MessageError, MessageSuccess } from '@/error/Error';
 
 
 const style = {
@@ -80,10 +81,10 @@ const page = () => {
       handleSubmit();
       if (res.status === 200) {
         setUpdateTable((prev) => !prev);
-        enqueueSnackbar('Delete successful', { variant: 'success' });
+        MessageSuccess("delete sucessfully")
       }
     } catch (error) {
-      console.log(error);
+     MessageError(error.message)
     }
   };
   const handleUpdate = async (e) => {
@@ -119,11 +120,11 @@ const page = () => {
       handleSubmit();
       if (res.status === 200) {
         setUpdateTable((prev) => !prev);
-        enqueueSnackbar('Customer updated', { variant: 'success' });
+        MessageSuccess("update sucessfully")
       }
     
     } catch (error) {
-      console.log(error);
+      MessageError(error.message)
     }
   };
   return (
