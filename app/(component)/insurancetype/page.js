@@ -49,6 +49,7 @@ const page = () => {
            console.log(error);
           }
         }
+<<<<<<< HEAD
 
   const [reset, setReset] = useState(false)
   const[verify,setVerify]=useState(false)
@@ -89,6 +90,8 @@ const page = () => {
            console.log(error);
           }
         }
+=======
+>>>>>>> ba908e9ea681abaec8163b99eec41c4596c4e727
 useEffect(() => {
     handleSubmit()
 }, [])
