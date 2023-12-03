@@ -1,7 +1,8 @@
 import React from 'react';
 import PaginationShared from '../pagination/PaginationShared';
+import { colors } from '@mui/material';
 
-const Table = ({ data, count, limit, setPage, page, setLimit, updateButton, deleteButton,feedbackButton,viewButton,feedbackFunction,updateFunction, setShow, deleteFunction, infoFunction }) => {
+const Table = ({ data, count, limit, setPage, page, setLimit, updateButton, deleteButton,viewFeedbackButton,viewFeedbackFunction,feedbackButton,replyFunction,viewButton,replyButton,feedbackFunction,updateFunction, setShow, deleteFunction, infoFunction }) => {
   let headerOfUserTable, rowsOfUserTable;
   
   if (data.length > 0) {
@@ -14,7 +15,9 @@ const Table = ({ data, count, limit, setPage, page, setLimit, updateButton, dele
     rowsOfUserTable = data.map((d, rowIndex) => {
       let singleRow = [];
 
+
       for (let i = 0; i < key.length; i++) {
+       
         if (typeof d[key[i]] === 'boolean') {
           singleRow.push(
             <td key={i} className="px-4 py-2">
@@ -23,7 +26,7 @@ const Table = ({ data, count, limit, setPage, page, setLimit, updateButton, dele
           );
         } else {
           singleRow.push(
-            <td key={i} className="px-4 py-2">
+            <td key={i} className="px-4 py-2" >
               {d[key[i]]}
             </td>
           );
@@ -58,6 +61,20 @@ const Table = ({ data, count, limit, setPage, page, setLimit, updateButton, dele
         singleRow.push(
           <td key={key.length + 2} className="px-4 py-2">
             <button className="btn-primary3" onClick={() => { feedbackFunction(d) }}>Feedback</button>
+          </td>
+        );
+      }
+      if (replyButton === true) {
+        singleRow.push(
+          <td key={key.length + 2} className="px-4 py-2">
+            <button className="btn-primary3" onClick={() => { replyFunction(d) }}>Reply</button>
+          </td>
+        );
+      }
+      if (viewFeedbackButton === true) {
+        singleRow.push(
+          <td key={key.length + 2} className="px-4 py-2" >
+            <button className="btn-primary3"style={{backgroundColor:'green'}} onClick={() => { viewFeedbackFunction(d) }}>Feedback Status</button>
           </td>
         );
       }

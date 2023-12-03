@@ -8,6 +8,8 @@ import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import { emphasize } from '@mui/material';
 import{createFeedback as createFeedback}from '../../../lib/feedback/CreateFeedback'
+import { getAllFeeedbackByPolicyId } from '@/lib/feedback/GetFeedbackByPolicyId';
+import { useRouter } from 'next/navigation';
 
 const style = {
   position: 'absolute',
@@ -23,15 +25,20 @@ const style = {
 };
 
 const page = () => {
+  const router=useRouter()
   const namePattern = /^[A-Za-z ]+$/;
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const handleOpens = () => setOpens(true);
+  const handleCloses = () => setOpens(false);
   const [open, setOpen] = React.useState(false);
+  const [opens, setOpens] = React.useState(false);
   const[policyData,setPolicyData]=useState([])
   const [count, setCount] = useState(1);
   const [limit, setLimit] = useState(2);
   const [noOfPages, setNoOfPages] = useState(1);
   const[policyId,setPoliyId]=useState()
+  const[updateFeedback,setUpdatedFeedback]=useState([])
   const[customerId]=useState(localStorage.getItem("id") || "")
 
   const[title,setTitle]=useState("")
@@ -54,6 +61,11 @@ const modelOpen=(e)=>{
   // e.preventDefault();
   handleOpen()
 }
+const viewFeedbackFunction=(d)=>{
+setPoliyId(d.id)
+  router.push(`/feedbacktrac/feedbackstatus/${d.id}`)
+}
+
 
 const handleFeedback=async(e)=>{
   e.preventDefault();
@@ -91,7 +103,7 @@ const handleFeedback=async(e)=>{
         <Box sx={style}>
           <form className="space-y-6 bg-transparent" action="#">
             <h5 className="text-xl font-medium text-gray-900 dark:text-white">
-              Create Feedback
+            Create Feedback
             </h5>
             <div>
               <label className="required block mb-2 text-sm font-medium text-gray-900 dark:text-white">
@@ -131,6 +143,7 @@ const handleFeedback=async(e)=>{
 
 
       </Modal>
+    
     <CreatePolicy handleSubmit={handleAllPolicy}/>
     <Table
     data={policyData}
@@ -139,7 +152,9 @@ const handleFeedback=async(e)=>{
     page={page}
     setPage={setNoOfPages}
     feedbackButton={true}
+    viewFeedbackButton={true}
     feedbackFunction={feedbackFunction}
+    viewFeedbackFunction={viewFeedbackFunction}
     />
     </>
   )

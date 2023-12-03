@@ -118,8 +118,8 @@ const page = () => {
             limit={limit}
             page={page}
             setPage={setNoOfPages}
-            replyButton={true}
-            replyFunction={replyFunction}
+            // replyButton={true}
+            // replyFunction={replyFunction}
 
           />
         </div>

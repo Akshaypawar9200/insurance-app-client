@@ -26,6 +26,9 @@ const [animationTriggered, setAnimationTriggered] = useState(false);
   const handleAllFeedback=()=>{
     router.push('/feedback')
   }
+  const handleTax=()=>{
+    router.push('/admindashboardfortax')
+  }
   return (
     <>
       <Navbar/>
@@ -64,13 +67,13 @@ const [animationTriggered, setAnimationTriggered] = useState(false);
 
           </div>
           <div className="card1">
+            <div onClick={handleTax} className={`card ${animationTriggered ? 'animated' : ''}`}>
+              <div className="info">
+              <h5>Tax</h5>
+              </div></div>
             <div className={`card ${animationTriggered ? 'animated' : ''}`}>
               <div className="info">
-              <h5>Policies</h5>
-              </div></div>
-            <div onClick={handleAllFeedback} className={`card ${animationTriggered ? 'animated' : ''}`}>
-              <div className="info">
-              <h5>Feedback</h5>
+              <h5>Statistic</h5>
               </div></div>
 
           </div>
